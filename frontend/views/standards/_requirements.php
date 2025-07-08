@@ -15,11 +15,11 @@ use yii\bootstrap5\Html;
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-capitalize text-bold">Requirement Description</th>
-                            <th class="text-capitalize text-bold">Status</th>
-                            <th class="text-capitalize text-bold">Evidence</th>
-                            <th class="text-capitalize text-bold">Gaps</th>
-                            <th class="text-capitalize text-bold">Actions Required</th>
+                            <th class="text-capitalize text-bold text-info">Requirement Description</th>
+                            <th class="text-capitalize text-bold text-info">Status</th>
+                            <th class="text-capitalize text-bold text-info">Evidence</th>
+                            <th class="text-capitalize text-bold text-info">Gaps</th>
+                            <th class="text-capitalize text-bold text-info">Actions Required</th>
                             <th class="text-bold"><?= Html::a('Add a Requirement', Url::home(true) . 'apiv1/requirements', [
                                 'class' => 'btn btn-sm btn-info add',
                                 'data-sub_clause_id' => $sc->id,
@@ -49,11 +49,16 @@ use yii\bootstrap5\Html;
                             ?>
 
                             <tr>
-                                <td><?= $r->description ?></td>
-                                <td><?= $r->status ?></td>
-                                <td><?= $r->evidence_path ?></td>
-                                <td><?= $r->gaps ?></td>
-                                <td><?= $r->actions_required ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="description" data-service="<?= $endpoint ?>"
+                                    ondblclick="addTextarea(this)"><?= $r->description ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="status" data-service="<?= $endpoint ?>"
+                                    ondblclick="addDropDown(this,'status')"><?= $r->status ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="evidence_path" data-service="<?= $endpoint ?>"
+                                    ondblclick="addTextarea(this)"><?= $r->evidence_path ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="gaps" data-service="<?= $endpoint ?>"
+                                    ondblclick="addTextarea(this)"><?= $r->gaps ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="actions_required" data-service="<?= $endpoint ?>"
+                                    ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
                                 <td>
                                     <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
                                 </td>

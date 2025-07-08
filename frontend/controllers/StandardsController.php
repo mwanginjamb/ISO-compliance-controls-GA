@@ -34,7 +34,7 @@ class StandardsController extends Controller
                 ],
                 'contentNegotiator' => [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['commit'],
+                    'only' => ['commit', 'status'],
                     'formatParam' => '_format',
                     'formats' => [
                         'application/json' => \yii\web\Response::FORMAT_JSON
@@ -49,6 +49,7 @@ class StandardsController extends Controller
 
         $ExceptedActions = [
             'commit',
+            'status'
         ];
 
         if (in_array($action->id, $ExceptedActions)) {
@@ -202,6 +203,26 @@ class StandardsController extends Controller
             return "HTTP request failed with error: " . $e->getMessage();
         }
 
+    }
+
+    // Status Drop Down Source
+    /*
+     *   ◦ Not Implemented (0): No evidence of implementation
+     *   ◦ Partially Implemented (1): Some evidence, but significant gaps exist
+     *   ◦ Mostly Implemented (2): Substantial evidence, minor gaps exist
+     *   ◦ Fully Implemented (3): Complete implementation with evidence
+     */
+
+    public function actionStatus()
+    {
+        $list = [
+            (object) ['code' => 0, 'name' => 'Active', 'description' => 'No evidence of implementation'],
+            (object) ['code' => 1, 'name' => 'Partial', 'description' => 'Some evidence, but significant gaps exist'],
+            (object) ['code' => 2, 'name' => 'Mostly Implemented', 'description' => 'Substantial evidence, minor gaps exist'],
+            (object) ['code' => 3, 'name' => 'Complete', 'description' => 'Complete implementation with evidence'],
+        ];
+
+        return Yii::$app->utility->dropDown($list, 'name', 'code', ['description']);
     }
 
 }
