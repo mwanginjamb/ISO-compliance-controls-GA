@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <thead>
                                             <tr>
                                                 <td class="text-capitalize text-center text-bold">#</td>
-                                                <td class="text-capitalize text-center text-bold">Controls</td>
+                                                <td class="text-capitalize text-center text-bold text-info">Controls</td>
                                                 <td class=" text-center text-bold">
                                                     <?= Html::a('Add a Control', Url::home(true) . 'apiv1/sub-clauses', [
                                                         'class' => 'btn btn-sm btn-primary add',
@@ -118,7 +118,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ?>
                                                 <tr class="parent">
                                                     <td><?= $sc->number ?></td>
-                                                    <td><?= $sc->sub_clause ?></td>
+                                                    <td data-key="<?= $sc->id ?>" data-name="sub_clause"
+                                                        data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)">
+                                                        <?= $sc->sub_clause ?>
+                                                    </td>
                                                     <td>
                                                         <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
                                                     </td>

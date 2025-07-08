@@ -160,13 +160,13 @@ function addInput(elm, type = false, field = false) {
 function addTextarea(elm) {
     if (elm.getElementsByTagName('textarea').length > 0) return;
 
-    var value = elm.textContent;
+    var value = elm.textContent.trim();
     elm.innerHTML = '';
 
     var input = document.createElement('textarea');
     input.setAttribute('rows', 2);
     //input.setAttribute('value', value);// use placeholder instead of value attribute  
-    input.innerText = value;
+    input.innerText = value.trim();
     input.style.width = "350px";
     input.setAttribute('class', 'form-control');
     input.setAttribute('onBlur', 'closeInput(this)');
