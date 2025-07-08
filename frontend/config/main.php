@@ -58,6 +58,7 @@ return [
                         'apiv1/clause',
                         'apiv1/sub-clause',
                         'apiv1/standard',
+                        'apiv1/requirements',
 
                     ],
                 ]

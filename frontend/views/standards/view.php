@@ -43,8 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th class="text-capitalize text center">Clause</th>
-                            <th class="text-capitalize">actions
+                            <th class="text-capitalize text-bold text-center">Clause</th>
+                            <th class="text-bold">actions
                                 <div class="float-right">
                                     <?= Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
                                         'class' => 'btn btn-warning add',
@@ -53,14 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-template' => 1,
                                         'data-endpoint' => Url::home(true) . 'apiv1/clauses',
                                     ]) ?>
-
                                 </div>
 
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- hidden template -->
+                        <!--  template -->
                         <tr class="templateRow parent" style="display: none">
                             <td data-name="id">1</td>
                             <td data-name="title">5</td>
@@ -76,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $count++;
                             ?>
                             <tr class="parent">
-                                <td><?= $c->id ?></td>
+                                <td><?= $count ?></td>
                                 <td colspan="2" data-key="<?= $c->id ?>" data-name="title" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this)">
                                     <?= $c->title ?>
@@ -90,10 +89,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <thead>
                                             <tr>
                                                 <td class="text-capitalize text-center text-bold">#</td>
-                                                <td class="text-capitalize text-center text-bold">Subclause</td>
-                                                <td class="text-capitalize text-center text-bold">
-                                                    <?= Html::a('Add a sub clause', Url::home(true) . 'apiv1/sub-clauses', [
-                                                        'class' => 'btn btn-warning add',
+                                                <td class="text-capitalize text-center text-bold">Controls</td>
+                                                <td class=" text-center text-bold">
+                                                    <?= Html::a('Add a Control', Url::home(true) . 'apiv1/sub-clauses', [
+                                                        'class' => 'btn btn-sm btn-primary add',
+                                                        'title' => 'Add a Sub-Clause',
                                                         'data-number' => Yii::$app->security->generateRandomString(3),
                                                         'data-sub_clause' => 'sub clause - ' . date('Y-m-d H:i:s'),
                                                         'data-template' => 1,
@@ -116,25 +116,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php foreach ($c->subClauses as $sc):
                                                 $endpoint = Url::home(true) . 'apiv1/clauses/' . $c->id;
                                                 ?>
-                                                <tr>
+                                                <tr class="parent">
                                                     <td><?= $sc->number ?></td>
                                                     <td><?= $sc->sub_clause ?></td>
-
                                                     <td>
                                                         <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
                                                     </td>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                                </tr>
 
-
-                    <!-- / sub clauses -->
-                    </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
+                                                <!-- Requirements -->
+                                                <?= $this->render('_requirements', ['sc' => $sc]) ?>
+                                                <!--/ requirements -->
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                    <!-- / sub clauses -->
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
                 </table>
             </div>
 
