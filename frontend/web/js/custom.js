@@ -872,9 +872,9 @@ $('.add').on('click', function (e) {
                     console.log(`refresh is set to false ${data.refresh}`);
                     return;
                 }
-                /* setTimeout(() => {
-                     location.reload(true);
-                 }, 100);*/
+                setTimeout(() => {
+                    location.reload(true);
+                }, 100);
 
 
             } else {
@@ -883,9 +883,9 @@ $('.add').on('click', function (e) {
                     title: result.note
                 });
 
-                /* setTimeout(() => {
-                     location.reload(true);
-                 }, 1500);*/
+                setTimeout(() => {
+                    location.reload(true);
+                }, 1500);
             }
         });
 

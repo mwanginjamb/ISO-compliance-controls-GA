@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-title' => 'clause - ' . date('Y-m-d H:i:s'),
                                         'data-template' => 1,
                                         'data-endpoint' => Url::home(true) . 'apiv1/clauses',
+                                        'data-reload' => 1
                                     ]) ?>
                                 </div>
 
@@ -101,6 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-template' => 1,
                                                         'data-clause_id' => $c->id,
                                                         'data-endpoint' => Url::home(true) . 'apiv1/sub-clauses',
+                                                        'data-reload' => 1
                                                     ]) ?>
                                                 </td>
                                             </tr>
