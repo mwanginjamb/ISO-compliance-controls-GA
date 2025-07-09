@@ -171,9 +171,7 @@ function addTextarea(elm) {
     input.innerText = value.trim();
     input.style.width = "350px";
     input.setAttribute('class', 'form-control');
-
-    initializeTinyMCE(uniqueId, value); // Initialize TinyMCE
-
+    //initializeTinyMCE(uniqueId, value); // Initialize TinyMCE
     input.setAttribute('onBlur', 'closeInput(this)');
     elm.appendChild(input);
     input.focus();
