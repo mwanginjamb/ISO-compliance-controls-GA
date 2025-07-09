@@ -45,20 +45,20 @@ use yii\bootstrap5\Html;
                         </tr>
                         <!-- /row template -->
                         <?php foreach ($sc->requirements as $r):
-                            $endpoint = Url::home(true) . 'apiv1/clauses/' . $r->id;
+                            $endpoint = Url::home(true) . 'apiv1/requirements/' . $r->id;
                             ?>
 
                             <tr>
                                 <td data-key="<?= $r->id ?>" data-name="description" data-service="<?= $endpoint ?>"
-                                    ondblclick="addTextarea(this)"><?= $r->description ?></td>
+                                    ondblclick="addTextarea(this)" data-reload="1"><?= $r->description ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="status" data-service="<?= $endpoint ?>"
-                                    ondblclick="addDropDown(this,'status')"><?= $r->status ?></td>
+                                    ondblclick="addDropDown(this,'status')" data-reload="1"><?= $r->status ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="evidence_path" data-service="<?= $endpoint ?>"
-                                    ondblclick="addTextarea(this)"><?= $r->evidence_path ?></td>
+                                    ondblclick="addTextarea(this)" data-reload="1"><?= $r->evidence_path ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="gaps" data-service="<?= $endpoint ?>"
-                                    ondblclick="addTextarea(this)"><?= $r->gaps ?></td>
+                                    ondblclick="addTextarea(this)" data-reload="1"><?= $r->gaps ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="actions_required" data-service="<?= $endpoint ?>"
-                                    ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
+                                    ondblclick="addTextarea(this)" data-reload="1"><?= $r->actions_required ?></td>
                                 <td>
                                     <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
                                 </td>

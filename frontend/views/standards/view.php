@@ -116,7 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </tr>
                                             <!-- /row template -->
                                             <?php foreach ($c->subClauses as $sc):
-                                                $endpoint = Url::home(true) . 'apiv1/sub-clauses/' . $c->id;
+                                                $endpoint = Url::home(true) . 'apiv1/sub-clauses' . $c->id;
                                                 ?>
                                                 <tr class="parent">
                                                     <td><?= $sc->number ?></td>
