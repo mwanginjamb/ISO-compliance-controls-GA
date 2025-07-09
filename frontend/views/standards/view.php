@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Standards $model */
 
-$this->title = 'Gap Analysis for' . $model->standard;
+$this->title = 'Gap Analysis for ' . $model->standard;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Standards'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="standards-view">
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
+
+
 
     <div class="card">
         <div class="card-header">
@@ -114,7 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </tr>
                                             <!-- /row template -->
                                             <?php foreach ($c->subClauses as $sc):
-                                                $endpoint = Url::home(true) . 'apiv1/clauses/' . $c->id;
+                                                $endpoint = Url::home(true) . 'apiv1/sub-clauses/' . $c->id;
                                                 ?>
                                                 <tr class="parent">
                                                     <td><?= $sc->number ?></td>

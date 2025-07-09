@@ -164,15 +164,21 @@ function addTextarea(elm) {
     elm.innerHTML = '';
 
     var input = document.createElement('textarea');
+    const uniqueId = 'rte-' + Date.now() + Math.floor(Math.random() * 1000);
+    input.setAttribute('id', uniqueId);
     input.setAttribute('rows', 2);
     //input.setAttribute('value', value);// use placeholder instead of value attribute  
     input.innerText = value.trim();
     input.style.width = "350px";
     input.setAttribute('class', 'form-control');
+
+    initializeTinyMCE(uniqueId, value); // Initialize TinyMCE
+
     input.setAttribute('onBlur', 'closeInput(this)');
     elm.appendChild(input);
     input.focus();
 }
+
 
 
 // Get Drop Down Filters
