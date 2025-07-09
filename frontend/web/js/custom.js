@@ -167,12 +167,14 @@ function addTextarea(elm) {
     input.setAttribute('rows', 2);
     //input.setAttribute('value', value);// use placeholder instead of value attribute  
     input.innerText = value.trim();
-    input.style.width = "350px";
+    input.style.width = "100%";
     input.setAttribute('class', 'form-control');
-    //initializeTinyMCE(uniqueId, value); // Initialize TinyMCE
     input.setAttribute('onBlur', 'closeInput(this)');
     elm.appendChild(input);
-    input.focus();
+
+    // *** VITAL: Initialize TinyMCE after textarea is in the DOM
+    initializeTinyMCE(uniqueId, value); // Initialize TinyMCE
+    // input.focus(); // Delegated to TinyMCE's auto_focus
 }
 
 
