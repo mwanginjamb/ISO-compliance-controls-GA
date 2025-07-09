@@ -14,6 +14,10 @@ function initializeTinyMCE(textareaId, initialContent, targetCell = null) {
             editor.on('init', function () {
                 editor.setContent(initialContent);
             });
+
+            editor.on('blur', function () {
+                closeInput(editor.getElement());
+            });
         },
         // Focus the editor immediately after initialization
         // `auto_focus` is a TinyMCE configuration option, often preferred over setTimeout

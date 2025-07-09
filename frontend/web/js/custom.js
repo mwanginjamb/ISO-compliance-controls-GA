@@ -17,21 +17,34 @@ const Toast = Swal.mixin({
 
 function closeInput(elm) {
     var td = elm.parentNode;
-    var value = elm.value;
+    var value;
+
+    // Work to destroy TinyMCE editor instance
+    // Check if element (elm) is a TinyMCE editor instance
+    const editorInstance = tinymce.get(elm.id);
+    if (editorInstance) {
+        value = editorInstance.getContent(); // Retrieve TinyMCE content
+        editorInstance.destroy();
+        console.log(`TinyMCE Editor Destroyed`);
+    } else {
+        value = elm.value; //Get Value from a standard textarea / input
+    }
+
 
     /** Handle Checkbox state */
     var child = td.children[0];
-
     if (child.type == 'checkbox') {
         value = (child.checked) ? 1 : 0;
     }
-
     /** Finish handling checkbox state */
+
+    // Remove textarea / input from DOM
     td.removeChild(elm);
+
+    // Update the tds innerHTML with the new (potentially rich) content
     td.innerHTML = value.trim();
 
     const data = td.dataset;
-
     console.log(`The Data Set`);
     console.table(data);
 
@@ -130,7 +143,6 @@ function closeInput(elm) {
 function addInput(elm, type = false, field = false) {
     if (elm.getElementsByTagName('input').length > 0) return;
 
-
     var value = elm.innerHTML;
     elm.innerHTML = '';
 
@@ -169,7 +181,7 @@ function addTextarea(elm) {
     input.innerText = value.trim();
     input.style.width = "100%";
     input.setAttribute('class', 'form-control');
-    input.setAttribute('onBlur', 'closeInput(this)');
+    // input.setAttribute('onBlur', 'closeInput(this)'); // Invoked with tinymce context
     elm.appendChild(input);
 
     // *** VITAL: Initialize TinyMCE after textarea is in the DOM
