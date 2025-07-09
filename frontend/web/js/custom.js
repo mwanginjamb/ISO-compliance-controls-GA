@@ -93,8 +93,6 @@ function closeInput(elm) {
             let validatedElement = parent.querySelector('.' + ClassName);
             const DataKey = data.validate;
             validatedElement.innerHTML = typeof (msg) === 'string' ? `<span class="text-danger">${msg}</span>` : msg[DataKey];
-
-
         }
 
 

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "sub_clause".
@@ -29,6 +31,15 @@ class SubClause extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'sub_clause';
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
     }
 
     /**
