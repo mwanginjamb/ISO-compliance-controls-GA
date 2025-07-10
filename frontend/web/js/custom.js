@@ -807,11 +807,24 @@ $(document).on('click', '.delete', function (e) {
             body: JSON.stringify({ ...payload })
         })
             .then(response => {
-                if (!response.ok) {
-                    // If the response is not OK (e.g., 404, 500), throw an error to go to the catch block
-                    return response.json().then(err => Promise.reject(err));
+
+                // Check for 204 No Content specifically
+                if (response.status === 204) {
+                    return { result: true, note: 'Record deleted successfully.' }; // Fabricate a success object
                 }
-                return response.json();
+
+                // For other successful responses (e.g., 200 OK with content)
+                if (response.ok) {
+                    return response.json(); // Parse JSON if content is expected
+                }
+                // For error responses (e.g., 4xx, 5xx)
+                return response.json().then(errorData => {
+                    // Parse error message from body if available, then reject
+                    return Promise.reject(errorData);
+                }).catch(() => {
+                    // Fallback if error body is not JSON or not present
+                    return Promise.reject({ note: `Server error: ${response.status} ${response.statusText}` });
+                });
             })
             .then(result => {
                 console.log(result);
