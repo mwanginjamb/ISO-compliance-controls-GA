@@ -26,8 +26,7 @@ use yii\bootstrap5\Html;
                                 'data-description' => 'requirement - ' . date('Y-m-d H:i:s'),
                                 'data-template' => 1,
                                 'data-status' => 0,
-                                'data-endpoint' => Url::home(true) . 'apiv1/requirements',
-                                'data-reload' => 1
+                                'data-endpoint' => Url::home(true) . 'apiv1/requirements'
                             ]) ?>
                             </th>
                         </tr>
@@ -61,7 +60,11 @@ use yii\bootstrap5\Html;
                                 <td data-key="<?= $r->id ?>" data-name="actions_required" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
                                 <td>
-                                    <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
+                                    <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
+                                    class' => 'btn btn-danger btn-sm delete',
+                                        'data-service' => $endpoint,
+                                        'data-key' => $r->id
+                                    ]) ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -779,8 +779,11 @@ function removeNotification(parentClassField, timeout = 2000) {
 
 
 
-$('.delete').on('click', function (e) {
+//$('.delete').on('click', function (e) {
+// Delegate the event
+$(document).on('click', '.delete', function (e) {
     e.preventDefault();
+    const $deleteButton = $(this); // Cache the button for later use
     if (confirm('Are you sure about deleting this record..?')) {
         let data = $(this).data();
         let url = $(this).attr('href');
@@ -790,19 +793,26 @@ $('.delete').on('click', function (e) {
             'Key': Key,
             'Service': Service
         };
+
+        let originalContent = $deleteButton.html(); // Store original content to restore it
         $(this).text('Deleting...');
         $(this).attr('disabled', true);
 
         const res = fetch(url, {
-            method: 'POST',
+            method: 'DELETE',
             headers: new Headers({
                 Origin: 'http://localhost:8080/',
                 "Content-Type": 'application/json',
-                //'Content-Type': 'application/x-www-form-urlencoded'
             }),
             body: JSON.stringify({ ...payload })
         })
-            .then(data => data.json())
+            .then(response => {
+                if (!response.ok) {
+                    // If the response is not OK (e.g., 404, 500), throw an error to go to the catch block
+                    return response.json().then(err => Promise.reject(err));
+                }
+                return response.json();
+            })
             .then(result => {
                 console.log(result);
                 if (result.result) {
@@ -812,22 +822,19 @@ $('.delete').on('click', function (e) {
                         title: 'Record deleted successfully.'
                     });
 
-                    /* setTimeout(() => {
-                       location.reload(true);
-                     }, 1500);*/
-
-                    $(this).closest("tr").fadeOut();
-                    $(this).closest("div.file").remove();
+                    // Fade out and remove the closest table row (the <tr> element)
+                    $deleteButton.closest("tr").fadeOut(400, function () {
+                        $(this).remove(); // Remove the row from the DOM after fade out
+                    });
 
                 } else {
                     Toast.fire({
                         type: 'error',
-                        title: result.note
+                        title: result.note || 'Failed to delete record.'
                     });
 
-                    /* setTimeout(() => {
-                       location.reload(true);
-                     }, 1500);*/
+                    $deleteButton.html(originalContent); // Restore original text/icon
+                    $deleteButton.attr('disabled', false).removeClass('disabled'); // Re-enable button        
                 }
             });
 
@@ -886,9 +893,12 @@ $('.add').on('click', function (e) {
                     console.log(`refresh is set to false ${data.refresh}`);
                     return;
                 }
-                setTimeout(() => {
-                    location.reload(true);
-                }, 100);
+                if (data?.reload) {
+                    setTimeout(() => {
+                        location.reload(true);
+                    }, 100);
+                }
+
 
 
             } else {

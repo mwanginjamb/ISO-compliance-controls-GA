@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-title' => 'clause - ' . date('Y-m-d H:i:s'),
                                         'data-template' => 1,
                                         'data-endpoint' => Url::home(true) . 'apiv1/clauses',
-                                        'data-reload' => 1
+                                        // 'data-reload' => 1
                                     ]) ?>
                                 </div>
 
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-template' => 1,
                                                         'data-clause_id' => $c->id,
                                                         'data-endpoint' => Url::home(true) . 'apiv1/sub-clauses',
-                                                        'data-reload' => 1
+                                                        //'data-reload' => 1
                                                     ]) ?>
                                                 </td>
                                             </tr>
@@ -113,7 +113,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <td data-name="number"></td>
                                                 <td data-name="sub_clause"></td>
                                                 <td>
-                                                    <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
+                                                    <?= Html::a('<i class="bi bi-trash"></i>', '#', [
+                                                        'class' => 'btn btn-danger btn-sm delete',
+                                                        'data-service' => $endpoint,
+                                                        'data-key' => $c->id
+                                                    ]) ?>
                                                 </td>
                                             </tr>
                                             <!-- /row template -->
@@ -127,7 +131,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         <?= $sc->sub_clause ?>
                                                     </td>
                                                     <td>
-                                                        <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['class' => 'btn btn-danger btn-sm delete']) ?>
+                                                        <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, [
+                                                            'class' => 'btn btn-danger btn-sm delete',
+                                                            'data-service' => $endpoint,
+                                                            'data-key' => $sc->id
+                                                        ]) ?>
                                                     </td>
                                                 </tr>
 
