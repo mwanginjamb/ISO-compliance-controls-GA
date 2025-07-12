@@ -52,7 +52,7 @@ use yii\bootstrap5\Html;
                                 <td data-key="<?= $r->id ?>" data-name="description" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->description ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="status" data-service="<?= $endpoint ?>"
-                                    ondblclick="addDropDown(this,'status')"><?= $r->status ?></td>
+                                    ondblclick="addDropDown(this,'status')" data-reload="1"><?= $r->status ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="evidence_path" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->evidence_path ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="gaps" data-service="<?= $endpoint ?>"

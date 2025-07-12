@@ -130,13 +130,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <tr class="parent">
                                                     <td><?= $sc->number ?></td>
                                                     <td data-key="<?= $sc->id ?>" data-name="sub_clause"
-                                                        data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)"
-                                                        data-reload="1">
+                                                        data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)">
                                                         <?= $sc->sub_clause ?>
                                                     </td>
                                                     <td>
                                                         <div class="badge rounded-pill <?= $sc->badge ?>">
-                                                            <?= $sc->averageStatus . ' - ' . $sc->verdict ?></div>
+                                                            <?= $sc->averageStatus . ' - ' . $sc->verdict ?>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, [

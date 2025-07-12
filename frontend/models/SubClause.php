@@ -125,7 +125,7 @@ class SubClause extends \yii\db\ActiveRecord
     public function getAverageStatus()
     {
         $this->averageStatus = $this->getRequirements()->count() > 0 ? $this->getRequirements()->average('status') : 0;
-        return round($this->averageStatus);
+        return round($this->averageStatus, 1);
     }
 
     public function getVerdict()
