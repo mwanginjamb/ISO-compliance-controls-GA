@@ -20,11 +20,13 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Clause $clause
  * @property Requirements[] $requirements
+ * @property int|null $averageStatus
  */
 class SubClause extends \yii\db\ActiveRecord
 {
 
 
+    public $averageStatus;
     /**
      * {@inheritdoc}
      */
@@ -55,6 +57,7 @@ class SubClause extends \yii\db\ActiveRecord
             [['number'], 'string', 'max' => 250],
             ['number', 'unique'],
             [['number'], 'required', 'on' => 'update'],
+            ['averageStatus', 'integer'],
             [['clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clause::class, 'targetAttribute' => ['clause_id' => 'id']],
         ];
     }
@@ -116,5 +119,49 @@ class SubClause extends \yii\db\ActiveRecord
             $this->save();
         }
     }
+
+    // Get Average 'Status' from all related requirements, it shold be rounded to the nearest integer
+
+    public function getAverageStatus()
+    {
+        $this->averageStatus = $this->requirements->count() > 0 ? $this->requirements->average('status') : 0;
+        return round($this->averageStatus);
+    }
+
+    public function getVerdict()
+    {
+        $average = $this->getAverageStatus();
+        switch ($average) {
+            case 0:
+                return 'Not Implemented';
+            case 1:
+                return 'Partially Implemented';
+            case 2:
+                return 'Mostly Implemented';
+            case 3:
+                return 'Fully Implemented';
+            default:
+                return 'N/A'; // Or handle error
+        }
+    }
+
+    // Badge Backgrounds
+    public function getBadge()
+    {
+        $average = $this->getAverageStatus();
+        switch ($average) {
+            case 0:
+                return 'bg-danger';
+            case 1:
+                return 'bg-warning text-dark';
+            case 2:
+                return 'bg-info text-dark';
+            case 3:
+                return 'bg-success';
+            default:
+                return 'bg-secondary'; // Or handle error
+        }
+    }
+
 
 }

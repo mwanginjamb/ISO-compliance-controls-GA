@@ -179,7 +179,7 @@ function addTextarea(elm) {
     input.setAttribute('rows', 2);
     //input.setAttribute('value', value);// use placeholder instead of value attribute  
     input.innerText = value.trim();
-    input.style.width = "100%";
+    input.style.width = "350px";
     input.setAttribute('class', 'form-control');
     // input.setAttribute('onBlur', 'closeInput(this)'); // Invoked with tinymce context
     elm.appendChild(input);

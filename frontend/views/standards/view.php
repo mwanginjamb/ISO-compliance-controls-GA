@@ -45,8 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th class="text-capitalize text-bold text-center">Clause</th>
-                            <th class="text-bold">actions
+                            <th class="text-capitalize text-bold text-center text-info">Clause</th>
+                            <th class="text-capitalize text-bold text-body text-center">actions
                                 <div class="float-right">
                                     <?= Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
                                         'class' => 'btn btn-warning add',
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-title' => 'clause - ' . date('Y-m-d H:i:s'),
                                         'data-template' => 1,
                                         'data-endpoint' => Url::home(true) . 'apiv1/clauses',
-                                        // 'data-reload' => 1
+                                        'data-reload' => 1
                                     ]) ?>
                                 </div>
 
@@ -92,7 +92,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <thead>
                                             <tr>
                                                 <td class="text-capitalize text-center text-bold">#</td>
-                                                <td class="text-capitalize text-center text-bold text-info">Controls</td>
+                                                <td class="text-capitalize text-center text-bold text-info">Sub Clauses /
+                                                    Controls</td>
+                                                <td>Compliance Status</td>
                                                 <td class=" text-center text-bold">
                                                     <?= Html::a('Add a Control', Url::home(true) . 'apiv1/sub-clauses', [
                                                         'class' => 'btn btn-sm btn-primary add',
@@ -112,6 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <tr class="templateRow" style="display: none">
                                                 <td data-name="number"></td>
                                                 <td data-name="sub_clause"></td>
+                                                <td data-name="compliance_status">N/A</td>
                                                 <td>
                                                     <?= Html::a('<i class="bi bi-trash"></i>', '#', [
                                                         'class' => 'btn btn-danger btn-sm delete',
@@ -127,8 +130,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <tr class="parent">
                                                     <td><?= $sc->number ?></td>
                                                     <td data-key="<?= $sc->id ?>" data-name="sub_clause"
-                                                        data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)">
+                                                        data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)"
+                                                        data-reload="1">
                                                         <?= $sc->sub_clause ?>
+                                                    </td>
+                                                    <td><span
+                                                            class="badge rounded-pill <?= $sc->badge ?>"><?= $sc->averageStatus . ' - ' . $sc->verdict ?></span>
                                                     </td>
                                                     <td>
                                                         <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, [
