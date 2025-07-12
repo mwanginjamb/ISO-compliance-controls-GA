@@ -125,42 +125,20 @@ class SubClause extends \yii\db\ActiveRecord
     public function getAverageStatus()
     {
         $this->averageStatus = $this->getRequirements()->count() > 0 ? $this->getRequirements()->average('status') : 0;
-        return round($this->averageStatus, 1);
+        return Yii::$app->formatter->asDecimal($this->averageStatus, Yii::$app->params['decimalPlaces']);
     }
 
     public function getVerdict()
     {
         $average = $this->getAverageStatus();
-        switch ($average) {
-            case 0:
-                return 'Not Implemented';
-            case 1:
-                return 'Partially Implemented';
-            case 2:
-                return 'Mostly Implemented';
-            case 3:
-                return 'Fully Implemented';
-            default:
-                return 'N/A'; // Or handle error
-        }
+        return Yii::$app->utility->getDescriptiveStatusFromConfig($average);
     }
 
     // Badge Backgrounds
     public function getBadge()
     {
         $average = $this->getAverageStatus();
-        switch ($average) {
-            case 0:
-                return 'bg-danger';
-            case 1:
-                return 'bg-warning text-dark';
-            case 2:
-                return 'bg-info text-dark';
-            case 3:
-                return 'bg-success';
-            default:
-                return 'bg-secondary'; // Or handle error
-        }
+        return Yii::$app->utility->getBadgeFromConfig($average);
     }
 
 

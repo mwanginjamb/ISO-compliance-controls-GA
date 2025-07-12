@@ -251,4 +251,32 @@ class Utility extends Component
         }
         return $dd;
     }
+
+    // Compliance Description from Average Status
+
+    public static function getDescriptiveStatusFromConfig(float $averageStatus): string
+    {
+        $thresholds = Yii::$app->params['app.statusThresholds'];
+
+        foreach ($thresholds as $description => $range) {
+            if ($averageStatus >= $range['min'] && $averageStatus <= $range['max']) {
+                return $description;
+            }
+        }
+        return 'Undefined Status'; // Handle cases outside your defined ranges
+    }
+
+
+    // Badge background based on average status
+    public static function getBadgeFromConfig(float $averageStatus): string
+    {
+        $thresholds = Yii::$app->params['app.statusClasses'];
+
+        foreach ($thresholds as $class => $range) {
+            if ($averageStatus >= $range['min'] && $averageStatus <= $range['max']) {
+                return $class;
+            }
+        }
+        return 'bg-secondary'; // Handle cases outside your defined ranges
+    }
 }
