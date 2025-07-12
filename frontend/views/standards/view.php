@@ -134,8 +134,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         data-reload="1">
                                                         <?= $sc->sub_clause ?>
                                                     </td>
-                                                    <td><span
-                                                            class="badge rounded-pill <?= $sc->badge ?>"><?= $sc->averageStatus . ' - ' . $sc->verdict ?></span>
+                                                    <td>
+                                                        <div class="badge rounded-pill <?= $sc->badge ?>">
+                                                            <?= $sc->averageStatus . ' - ' . $sc->verdict ?></div>
                                                     </td>
                                                     <td>
                                                         <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, [
