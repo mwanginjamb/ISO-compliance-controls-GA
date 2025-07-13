@@ -38,15 +38,15 @@ class Calibration extends Component
         // Save average status of all requirements per sub_clause
         $subClause = SubClause::findOne($subclause);
         $subClause->average_status = $subClause->getAverageStatus();
-        if (!$subClause->save(false)) {
-            // Log possible error and ensure they can be rendered to avoid array to string conversion error
-            $errors = print_r($subClause->errors, true);
-            Yii::error('subclause update error: ' . $errors, 'calibration');
-            return false;
-        }
+        if ($subClause->save(false)) {
+            // log the entire update subclause object
+            Yii::info('subclause update: ' . print_r($subClause, true), 'calibration');
 
-        // log the entire update subclause object
-        Yii::info('subclause update: ' . print_r($subClause, true), 'calibration');
+        } else {
+            // Log possible error and ensure they can be rendered to avoid array to string conversion error
+            $errors = print_r($subClause->getErrors(), true);
+            Yii::error('subclause update error: ' . $errors, 'calibration');
+        }
 
     }
 
