@@ -12,7 +12,7 @@ return [
     'id' => 'app-frontend',
     'name' => env('APP_NAME'),
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'calibration'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -44,6 +44,9 @@ return [
                     'logFile' => '@runtime/logs/api.log',
                 ],
             ],
+        ],
+        'calibration' => [
+            'class' => 'common\Library\Calibration',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
