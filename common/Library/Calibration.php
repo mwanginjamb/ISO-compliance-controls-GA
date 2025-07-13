@@ -31,9 +31,9 @@ class Calibration extends Component
 
     public function handlerRequirementStatusChanged(Event $event)
     {
-        Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS . print_r($event, true), 'calibration');
+        // Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS . print_r($event, true), 'calibration');
         $subclause = $event->sub_clause_id; // sub_clause identifier
-        Yii::info('subclause: ' . $subclause, 'calibration');
+        //  Yii::info('subclause: ' . $subclause, 'calibration');
 
         // Save average status of all requirements per sub_clause
         $subClause = SubClause::findOne($subclause);
@@ -41,7 +41,6 @@ class Calibration extends Component
         if ($subClause->save(false)) {
             // log the entire update subclause object
             Yii::info('subclause update: ' . print_r($subClause, true), 'calibration');
-
         } else {
             // Log possible error and ensure they can be rendered to avoid array to string conversion error
             $errors = print_r($subClause->getErrors(), true);
