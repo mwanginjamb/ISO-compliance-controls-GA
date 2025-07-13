@@ -59,7 +59,7 @@ class SubClause extends \yii\db\ActiveRecord
             ['number', 'unique'],
             [['number'], 'required', 'on' => 'update'],
             ['averageStatus', 'integer'],// calculated value
-            ['average_status', 'decimal'], // DB column - populated from calibration event handler
+            ['average_status', 'number'], // DB column - populated from calibration event handler
             [['clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clause::class, 'targetAttribute' => ['clause_id' => 'id']],
         ];
     }
