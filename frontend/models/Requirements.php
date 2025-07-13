@@ -25,7 +25,7 @@ use yii\behaviors\TimestampBehavior;
  */
 class Requirements extends \yii\db\ActiveRecord
 {
-
+    const EVENT_EVAL_STATUS = 'eval_status';
 
     /**
      * {@inheritdoc}
@@ -35,6 +35,8 @@ class Requirements extends \yii\db\ActiveRecord
         return 'requirements';
     }
 
+
+
     public function behaviors()
     {
         return [
@@ -42,6 +44,8 @@ class Requirements extends \yii\db\ActiveRecord
             BlameableBehavior::class
         ];
     }
+
+
 
     /**
      * {@inheritdoc}
@@ -94,6 +98,14 @@ class Requirements extends \yii\db\ActiveRecord
     public static function find()
     {
         return new RequirementsQuery(get_called_class());
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert || $changedAttributes['status']) {
+            $this->trigger(self::EVENT_EVAL_STATUS);
+        }
     }
 
 }

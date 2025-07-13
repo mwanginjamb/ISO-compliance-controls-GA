@@ -4,7 +4,7 @@ use yii\bootstrap5\Html;
 ?>
 
 <tr class="child">
-    <td colspan="3">
+    <td colspan="4">
         <div class="card">
             <div class="card-header">
                 <div class="headaction">

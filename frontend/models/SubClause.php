@@ -17,6 +17,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $average_status
  *
  * @property Clause $clause
  * @property Requirements[] $requirements
@@ -57,7 +58,8 @@ class SubClause extends \yii\db\ActiveRecord
             [['number'], 'string', 'max' => 250],
             ['number', 'unique'],
             [['number'], 'required', 'on' => 'update'],
-            ['averageStatus', 'integer'],
+            ['averageStatus', 'integer'],// calculated value
+            ['average_status', 'decimal'], // DB column
             [['clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => Clause::class, 'targetAttribute' => ['clause_id' => 'id']],
         ];
     }

@@ -46,7 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr>
                             <th>#</th>
                             <th class="text-capitalize text-bold text-center text-info">Clause</th>
-                            <th class="text-capitalize text-bold text-body text-center">actions
+                            <th>Compliance Status</th>
+                            <th class="text-capitalize text-bold text-body text-center">
                                 <div class="float-right">
                                     <?= Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
                                         'class' => 'btn btn-warning add',
@@ -79,14 +80,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             ?>
                             <tr class="parent">
                                 <td><?= $count ?></td>
-                                <td colspan="2" data-key="<?= $c->id ?>" data-name="title" data-service="<?= $endpoint ?>"
+                                <td data-key="<?= $c->id ?>" data-name="title" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this)">
                                     <?= $c->title ?>
+                                </td>
+                                <td colspan="2">
+                                    <div class="badge rounded-pill <?= $c->badge ?>">
+                                        <?= $c->getSubClausesAverageStatus() . ' - ' . $c->verdict ?>
+                                    </div>
                                 </td>
 
                             </tr>
                             <tr class="child">
-                                <td colspan="3">
+                                <td colspan="4">
                                     <!-- subclauses -->
                                     <table class="table table-bordered">
                                         <thead>

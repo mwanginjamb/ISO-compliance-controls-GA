@@ -20,10 +20,12 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Standards $standards
  * @property SubClause[] $subClauses
+ * @property float|null $subclauses_average_status
  */
 class Clause extends \yii\db\ActiveRecord
 {
 
+    public $subclauses_average_status;
 
     /**
      * {@inheritdoc}
@@ -54,6 +56,7 @@ class Clause extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'created_by', 'updated_by', 'standard_id'], 'integer'],
             [['title'], 'string', 'max' => 250],
             [['standard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Standards::class, 'targetAttribute' => ['standard_id' => 'id']],
+            ['subclauses_average_status', 'safe'],
         ];
     }
 
@@ -102,5 +105,27 @@ class Clause extends \yii\db\ActiveRecord
     {
         return new ClauseQuery(get_called_class());
     }
+
+    // get SubClauses Average Status
+    public function getSubClausesAverageStatus()
+    {
+        return $this->subclauses_average_status = $this->getSubClauses()->average('average_status') ?: 0.00;
+    }
+
+    // Get Status Descritive Status Text
+    public function getVerdict()
+    {
+        $average = $this->getSubClausesAverageStatus();
+        return Yii::$app->utility->getDescriptiveStatusFromConfig($average);
+    }
+
+    // Badge Backgrounds
+    public function getBadge()
+    {
+        $average = $this->getSubClausesAverageStatus();
+        return Yii::$app->utility->getBadgeFromConfig($average);
+    }
+
+
 
 }
