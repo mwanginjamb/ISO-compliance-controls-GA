@@ -20,7 +20,7 @@ class Calibration extends Component
     {
         parent::init();
 
-        // Listen to custom event "EVENT_STATUS_PENDING" from WorkflowEntries model
+        // Listen to custom event "EVENT_EVAL_STATUS" from WorkflowEntries model
         Event::on(
             Requirements::class,
             Requirements::EVENT_EVAL_STATUS,
@@ -31,12 +31,18 @@ class Calibration extends Component
 
     public function handlerRequirementStatusChanged(Event $event)
     {
-        $clause = $event->sub_clause_id; // sub_clause identifier
+        Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS, 'calibration');
+        $subclause = $event->sub_clause_id; // sub_clause identifier
+        Yii::info('subclause: ' . $subclause, 'calibration');
 
         // Save average status of all requirements per sub_clause
-        $sub_clause = SubClause::findOne($clause);
-        $sub_clause->average_status = $sub_clause->getAverageStatus();
-        $sub_clause->save(false);
+        $subClause = SubClause::findOne($subclause);
+        $subClause->average_status = $subClause->getAverageStatus();
+        if (!$subClause->save(false)) {
+            // Log possible error and ensure they can be rendered to avoid array to string conversion error
+            $errors = print_r($subClause->errors, true);
+            Yii::error('subclause update error: ' . $errors, 'calibration');
+        }
     }
 
 

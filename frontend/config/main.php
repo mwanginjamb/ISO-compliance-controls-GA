@@ -43,6 +43,12 @@ return [
                     'categories' => ['api_debug'],
                     'logFile' => '@runtime/logs/api.log',
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info', 'error'],
+                    'categories' => ['calibration'],
+                    'logFile' => '@runtime/logs/calibration.log',
+                ],
             ],
         ],
         'calibration' => [

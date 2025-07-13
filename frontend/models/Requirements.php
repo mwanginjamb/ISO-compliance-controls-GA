@@ -103,8 +103,12 @@ class Requirements extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        if ($insert || $changedAttributes['status']) {
-            $this->trigger(self::EVENT_EVAL_STATUS);
+        if (!$insert && $this->status) { // not an insert and status has a value
+            if (array_key_exists('status', $changedAttributes)) { // status has changed
+                $this->trigger(self::EVENT_EVAL_STATUS); // trigger the event
+                // log the event and its data
+                Yii::info('Event triggered: ' . self::EVENT_EVAL_STATUS, 'calibration');
+            }
         }
     }
 
