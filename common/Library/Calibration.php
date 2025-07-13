@@ -42,7 +42,12 @@ class Calibration extends Component
             // Log possible error and ensure they can be rendered to avoid array to string conversion error
             $errors = print_r($subClause->errors, true);
             Yii::error('subclause update error: ' . $errors, 'calibration');
+            return false;
         }
+
+        // log the entire update subclause object
+        Yii::info('subclause update: ' . print_r($subClause, true), 'calibration');
+
     }
 
 

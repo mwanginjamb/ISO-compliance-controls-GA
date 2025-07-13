@@ -48,6 +48,8 @@ return [
                     'levels' => ['info', 'error'],
                     'categories' => ['calibration'],
                     'logFile' => '@runtime/logs/calibration.log',
+                    // Exclude some variables
+                    'logVars' => ['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_REQUEST', '_SERVER', '_ENV'],
                 ],
             ],
         ],
