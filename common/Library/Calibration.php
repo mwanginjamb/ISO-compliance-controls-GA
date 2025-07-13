@@ -31,20 +31,24 @@ class Calibration extends Component
 
     public function handlerRequirementStatusChanged(Event $event)
     {
-        // Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS . print_r($event, true), 'calibration');
-        $subclause = $event->sub_clause_id; // sub_clause identifier
-        //  Yii::info('subclause: ' . $subclause, 'calibration');
+        // Log relevant event properties instead of the whole object
+        Yii::info('Handling event. Event name: ' . $event->name . ', sender class: ' . get_class($event->sender) . ', sub_clause_id: ' . ($event->sub_clause_id ?? 'N/A'), 'calibration');
+        $subclauseId = $event->sub_clause_id; // sub_clause identifier
+        Yii::info('Subclause ID: ' . $subclauseId, 'calibration');
 
         // Save average status of all requirements per sub_clause
-        $subClause = SubClause::findOne($subclause);
-        $subClause->average_status = $subClause->getAverageStatus();
-        if ($subClause->save(false)) {
-            // log the entire update subclause object
-            Yii::info('subclause update: ' . print_r($subClause, true), 'calibration');
+        $subClause = SubClause::findOne($subclauseId);
+        if ($subClause) {
+            $subClause->average_status = $subClause->getAverageStatus();
+            if ($subClause->save(false)) {
+                // Log the updated SubClause object's public properties as JSON
+                Yii::info('Subclause update: ' . json_encode($subClause->toArray()), 'calibration');
+            } else {
+                // Log validation errors as JSON
+                Yii::error('Subclause update error: ' . json_encode($subClause->getErrors()), 'calibration');
+            }
         } else {
-            // Log possible error and ensure they can be rendered to avoid array to string conversion error
-            $errors = print_r($subClause->getErrors(), true);
-            Yii::error('subclause update error: ' . $errors, 'calibration');
+            Yii::error('Subclause not found for ID: ' . $subclauseId, 'calibration');
         }
 
     }
