@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\events\RequirementsStatusEvent;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -105,6 +106,11 @@ class Requirements extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
         if (!$insert) { // not an insert 
             if (array_key_exists('status', $changedAttributes)) { // status has changed
+                // Create cust event and trigger it
+                $event = new RequirementsStatusEvent([
+                    'sub_clause_id' => $this->sub_clause_id,
+                    'status' => $this->status
+                ]);
                 $this->trigger(self::EVENT_EVAL_STATUS); // trigger the event
                 // log the event and its data
                 Yii::info('Event triggered: ' . self::EVENT_EVAL_STATUS, 'calibration');

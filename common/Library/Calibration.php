@@ -3,11 +3,11 @@ namespace common\Library;
 
 use app\models\Requirements;
 use app\models\SubClause;
+use common\events\RequirementsStatusEvent;
 use Yii;
 use yii\base\Event;
 use yii\base\Component;
-use app\models\Contracts;
-use app\models\WorkflowEntries;
+
 
 
 class Calibration extends Component
@@ -29,7 +29,7 @@ class Calibration extends Component
 
     }
 
-    public function handlerRequirementStatusChanged(Event $event)
+    public function handlerRequirementStatusChanged(RequirementsStatusEvent $event)
     {
         // Log relevant event properties instead of the whole object
         Yii::info('Handling event. Event name: ' . $event->name . ', sender class: ' . get_class($event->sender) . ', sub_clause_id: ' . ($event->sub_clause_id ?? 'N/A'), 'calibration');
