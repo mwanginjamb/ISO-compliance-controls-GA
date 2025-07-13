@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td colspan="2">
                                     <div class="badge rounded-pill <?= $c->badge ?>">
-                                        <?= $c->getSubClausesAverageStatus() . ' - ' . $c->verdict ?>
+                                        <?= Yii::$app->formatter->asDecimal($c->getSubClausesAverageStatus(), 1) . ' - ' . $c->verdict ?>
                                     </div>
                                 </td>
 

@@ -109,7 +109,7 @@ class Clause extends \yii\db\ActiveRecord
     // get SubClauses Average Status
     public function getSubClausesAverageStatus()
     {
-        return $this->subclauses_average_status = $this->getSubClauses()->average('average_status') ?: 0.00;
+        return $this->subclauses_average_status = floatval($this->getSubClauses()->average('average_status')) ?: 0.00;
     }
 
     // Get Status Descritive Status Text
