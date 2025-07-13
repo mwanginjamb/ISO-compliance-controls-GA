@@ -41,6 +41,15 @@ $this->title = Yii::$app->name;
                                         ]
                                     ]
                                 ]) ?>
+                                <?= Html::a('<i class="bi bi-bar-chart mx-sm-1"></i> Graphical Analysis', Url::toRoute(['standards/visualization', 'id' => $c->id]), [
+                                    'class' => 'btn btn-sm btn-info',
+                                    'data' => [
+                                        'method' => 'get',
+                                        'params' => [
+                                            'id' => $c->id
+                                        ]
+                                    ]
+                                ]) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

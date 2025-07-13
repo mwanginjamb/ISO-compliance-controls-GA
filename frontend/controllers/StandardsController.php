@@ -34,7 +34,7 @@ class StandardsController extends Controller
                 ],
                 'contentNegotiator' => [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['commit', 'status'],
+                    'only' => ['commit', 'status', 'analysis'],
                     'formatParam' => '_format',
                     'formats' => [
                         'application/json' => \yii\web\Response::FORMAT_JSON
@@ -49,7 +49,8 @@ class StandardsController extends Controller
 
         $ExceptedActions = [
             'commit',
-            'status'
+            'status',
+            'analysis',
         ];
 
         if (in_array($action->id, $ExceptedActions)) {
@@ -84,6 +85,13 @@ class StandardsController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionVisualization($id)
+    {
+        return $this->render('visualization', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -223,6 +231,30 @@ class StandardsController extends Controller
         ];
 
         return Yii::$app->utility->dropDown($list, 'name', 'code', ['description']);
+    }
+
+
+    // return a json associative array of clause - average subclauses statuses
+    public function actionAnalysis($id)
+    {
+
+        $standard = $this->findModel($id);
+        $clauses = $standard->clauses;
+        $data = [];
+        foreach ($clauses as $clause) {
+            // check if clause has subclauses
+            if (empty($clause->subClauses)) {
+                continue;
+            }
+
+            $data[] = [
+                $clause->title => Yii::$app->formatter->asDecimal($clause->getSubClausesAverageStatus(), 1)
+            ];
+
+        }
+
+        return $data;
+
     }
 
 }

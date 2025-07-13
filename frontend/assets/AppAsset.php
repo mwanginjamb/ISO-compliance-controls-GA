@@ -26,7 +26,8 @@ class AppAsset extends AssetBundle
         '//cdnjs.cloudflare.com/ajax/libs/tinymce/7.9.1/tinymce.min.js',
         'js/tinymce.js',
         'js/custom.js',
-        'js/accordion.js'
+        'js/accordion.js',
+        '//cdn.jsdelivr.net/npm/chart.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
