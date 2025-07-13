@@ -31,7 +31,7 @@ class Calibration extends Component
 
     public function handlerRequirementStatusChanged(Event $event)
     {
-        Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS, 'calibration');
+        Yii::info('Handling event: ' . Requirements::EVENT_EVAL_STATUS . print_r($event, true), 'calibration');
         $subclause = $event->sub_clause_id; // sub_clause identifier
         Yii::info('subclause: ' . $subclause, 'calibration');
 
