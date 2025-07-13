@@ -42,11 +42,18 @@ const id = +$('.standard').text();
 
             // 1. Fetch clause scores from the backend
         const response = await fetch(Url);
-        const clauseData = await response.json();
+        const rawArray = await response.json();
+
+        // 2. Flatten into a map: { clause: score }
+        const clauseData = {};
+        rawArray.forEach(obj => {
+        const [clause, value] = Object.entries(obj)[0]; // Destructure the only entry
+        clauseData[clause] = parseFloat(value); // Ensure score is numeric
+        });
 
         console.log(clauseData);
 
-        // 2. Prepare labels, data, and colors
+        // 3. Prepare labels, data, and colors
         const labels = Object.keys(clauseData);
         const dataValues = Object.values(clauseData);
 
@@ -59,10 +66,10 @@ const id = +$('.standard').text();
 
         const colors = dataValues.map(getColor);
 
-        // 3. Optional: calculate average
+        // 4. Optional: calculate average
         const avgScore = dataValues.reduce((sum, score) => sum + score, 0) / dataValues.length;
 
-        // 4. Configure the chart
+        // 5. Configure the chart
         const config = {
         type: 'bar',
         data: {
@@ -131,7 +138,7 @@ const id = +$('.standard').text();
         }
         };
 
-        // 5. Render the chart
+        // 6. Render the chart
         new Chart(document.getElementById('gapChart'), config);
 
         }catch(err){
