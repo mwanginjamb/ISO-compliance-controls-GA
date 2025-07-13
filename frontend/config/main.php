@@ -49,7 +49,7 @@ return [
                     'categories' => ['calibration'],
                     'logFile' => '@runtime/logs/calibration.log',
                     // Exclude global variables
-                    //'logVars' => [],
+                    'logVars' => [],
                 ],
             ],
         ],
