@@ -16,8 +16,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
 
+    <!-- Tabular Presentation -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title align-self-center">Tabular Clause by Clause Gap Analysis</h3>
+        </div>
+        <div class="card-body">
 
+            <div id="scoreTableContainer"></div>
 
+        </div>
+    </div>
+
+    <!-- Graphical Representation -->
     <div class="card">
         <div class="card-header">
             <h3 class="card-title align-self-center">Gaps Analysis Visualization</h3>
@@ -37,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $script = <<<JS
     async function drawChart() {
         try{
-const id = +$('.standard').text();
+        const id = +$('.standard').text();
         const Url = './analysis?id=' + id;
 
             // 1. Fetch clause scores from the backend
@@ -51,6 +62,7 @@ const id = +$('.standard').text();
         clauseData[clause] = parseFloat(value); // Ensure score is numeric
         });
 
+        renderScoreTable(clauseData);
         console.log(clauseData);
 
         // 3. Prepare labels, data, and colors
@@ -111,7 +123,7 @@ const id = +$('.standard').text();
                     else if (value < 1.5) label = 'Partially Implemented';
                     else if (value < 2.5) label = 'Mostly Implemented';
                     else label = 'Fully Implemented';
-                    return label + value;
+                    return label +' '+ value;
                 }
                 }
             },
@@ -146,7 +158,7 @@ const id = +$('.standard').text();
         }
     }
     
-    drawChart();
+    drawChart();    
 JS;
     $this->registerJs($script);
     ?>
