@@ -16,29 +16,53 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
 
-    <!-- Tabular Presentation -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title align-self-center">Tabular Clause by Clause Gap Analysis</h3>
-        </div>
-        <div class="card-body">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Tabular Presentation -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title align-self-center">Tabular Clause by Clause Gap Analysis</h3>
+                </div>
+                <div class="card-body">
 
-            <div id="scoreTableContainer"></div>
+                    <div id="scoreTableContainer"></div>
+
+                </div>
+            </div>
+
+
 
         </div>
+        <div class="col-md-6">
+            <!-- Pie Chart: Summarizes how many clauses fall under each implementation level -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Pie Chart: Summarize Implementation Level Distribution</div>
+                </div>
+                <div class="card-body">
+                    <canvas id="levelPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Graphical Representation -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title align-self-center">Gaps Analysis Visualization</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title align-self-center">Gaps Analysis Visualization</h3>
 
-        </div>
-        <div class="card-body">
-            <!-- Visualization Canvas  -->
-            <canvas id="gapChart"></canvas>
+                </div>
+                <div class="card-body">
+                    <!-- Visualization Canvas  -->
+                    <canvas id="gapChart"></canvas>
 
+                </div>
+            </div>
         </div>
+
     </div>
 
 
@@ -62,7 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
         clauseData[clause] = parseFloat(value); // Ensure score is numeric
         });
 
-        renderScoreTable(clauseData);
+        renderScoreTable(clauseData); // Tabular Representation
+       // drawChart(clauseData); // render clause implementation level distribution chart
+
         console.log(clauseData);
 
         // 3. Prepare labels, data, and colors

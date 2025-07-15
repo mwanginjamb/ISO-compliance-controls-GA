@@ -28,7 +28,8 @@ class AppAsset extends AssetBundle
         'js/custom.js',
         'js/accordion.js',
         '//cdn.jsdelivr.net/npm/chart.js',
-        'js/tableRender.js'
+        'js/tableRender.js',
+        'js/pie.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
