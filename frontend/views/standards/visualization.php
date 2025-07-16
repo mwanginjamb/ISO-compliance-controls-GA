@@ -136,6 +136,34 @@ $this->params['breadcrumbs'][] = $this->title;
             indexAxis: 'y',
             responsive: true,
             plugins: {
+                datalabels: {
+                anchor: 'end',
+                align: 'right',
+                formatter: (value) => {
+                        if (value < 0.5) return 'Not Implemented';
+                        if (value < 1.5) return 'Partially';
+                        if (value < 2.5) return 'Mostly';
+                        return 'Fully';
+                    },
+                    color: '#000',
+                    font: {
+                        weight: 'bold'
+                    }
+            },
+            legend: {
+                display: true,
+                position: 'right',
+                labels: {
+                usePointStyle: true
+                },
+                onClick: (event, legendItem, legend) => {
+                const index = legendItem.datasetIndex;
+                const chart = legend.chart;
+                const meta = chart.getDatasetMeta(index);
+                meta.hidden = !meta.hidden;
+                chart.update();
+                }
+            },
             title: {
                 display: true,
                 text: 'ISO/IEC 27001 Gap Analysis by Clause'
@@ -150,7 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     else if (value < 2.5) label = 'Mostly Implemented';
                     else label = 'Fully Implemented';
                     return label +' '+ value;
-                }
+                 }
                 }
             },
             legend: {

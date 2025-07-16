@@ -28,6 +28,7 @@ class AppAsset extends AssetBundle
         'js/custom.js',
         'js/accordion.js',
         '//cdn.jsdelivr.net/npm/chart.js',
+        '//cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2',
         'js/tableRender.js',
         'js/pie.js'
     ];
