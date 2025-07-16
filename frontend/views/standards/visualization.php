@@ -16,6 +16,36 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
 
+    <!-- Provide a lengend key for score scales -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="title">Score Scales Legend</div>
+                </div>
+                <div class="card-body">
+                    <div id="chartLegend" style="margin-top:1em;">
+                        <h4>Implementation Level Key</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li><span
+                                    style="display:inline-block;width:20px;height:20px;background:#e74c3c;margin-right:5px;"></span>
+                                Not Implemented (0.0 – 0.49) : No evidence of implementation</li>
+                            <li><span
+                                    style="display:inline-block;width:20px;height:20px;background:#f39c12;margin-right:5px;"></span>
+                                Partially Implemented (0.5 – 1.49) : Some evidence, but significant gaps exist</li>
+                            <li><span
+                                    style="display:inline-block;width:20px;height:20px;background:#f1c40f;margin-right:5px;"></span>
+                                Mostly Implemented (1.5 – 2.49) : Substantial evidence, minor gaps exist</li>
+                            <li><span
+                                    style="display:inline-block;width:20px;height:20px;background:#2ecc71;margin-right:5px;"></span>
+                                Fully Implemented (2.5 – 3.0) : Complete implementation with evidence</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / End score scales legend -->
     <div class="row">
         <div class="col-md-6">
             <!-- Tabular Presentation -->
