@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "836d984e263ae6faef9b955464f0dcc6",
+    "content-hash": "2be80b14a39eaaec5b5b3d89bc0c2eae",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -767,6 +767,58 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "solutosoft/yii-multitenant",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/solutosoft/yii-multitenant.git",
+                "reference": "c3e9b090d918d5f6d1059f233ccb0f9ae8fb0979"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/solutosoft/yii-multitenant/zipball/c3e9b090d918d5f6d1059f233ccb0f9ae8fb0979",
+                "reference": "c3e9b090d918d5f6d1059f233ccb0f9ae8fb0979",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.16"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "yii-extension",
+            "autoload": {
+                "psr-4": {
+                    "solutosoft\\multitenant\\": "src",
+                    "solutosoft\\multitenant\\tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Leandro Guindani Gehlen",
+                    "email": "leandrogehlen@gmail.com",
+                    "homepage": "https://github.com/leandrogehlen"
+                }
+            ],
+            "description": "The shared database used by all tenants",
+            "homepage": "https://gitlab.com/solutosoft/yii2-base",
+            "keywords": [
+                "extension",
+                "multitenant",
+                "tenant",
+                "yii2"
+            ],
+            "support": {
+                "issues": "https://github.com/solutosoft/yii-multitenant/issues?state=open",
+                "source": "https://github.com/solutosoft/yii-multitenant"
+            },
+            "time": "2020-02-20T12:05:34+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
