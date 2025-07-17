@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "tenants".
@@ -24,6 +25,13 @@ class Tenants extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'tenants';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**

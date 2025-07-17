@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use solutosoft\multitenant\MultiTenantRecord;
+use solutosoft\multitenant\TenantInterface;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -22,8 +24,9 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property integer $tenant_id
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends MultiTenantRecord implements IdentityInterface, TenantInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -37,6 +40,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return '{{%user}}';
     }
+
+    // Fetch Tenant ID
+
+    public function getTenantId()
+    {
+        return $this->tenant_id;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -110,7 +121,8 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $token verify email token
      * @return static|null
      */
-    public static function findByVerificationToken($token) {
+    public static function findByVerificationToken($token)
+    {
         return static::findOne([
             'verification_token' => $token,
             'status' => self::STATUS_INACTIVE
