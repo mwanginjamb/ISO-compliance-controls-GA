@@ -21,5 +21,8 @@ return [
         'sharepoint' => [
             'class' => 'common\Library\Sharepoint'
         ],
+        'assetManager' => [
+            'appendTimestamp' => true
+        ],
     ],
 ];

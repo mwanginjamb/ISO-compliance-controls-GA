@@ -96,8 +96,8 @@ GuestAsset::register($this);
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="card2 card border-0 px-4 py-5">
-                            <div class="row mb-4 px-3">
+                        <div class="card2 card border-0 px-4 py-2">
+                            <div class="row mb-2 px-3">
                                 <!-- <h6 class="mb-0 mr-4 mt-2">Sign in with</h6>
                                 <div class="facebook text-center mr-3">
                                     <div class="fa fa-facebook"></div>
