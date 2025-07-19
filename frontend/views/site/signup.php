@@ -16,18 +16,25 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>Please fill out the following fields to signup:</p>
 
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-12">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+            <?= $form->errorSummary($model) ?>
 
-                <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+            <?= $form->field($model, 'email') ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
+            <?= $form->field($model, 'tenant_id')->dropDownList($tenants, ['prompt' => 'Select Business Unit']) ?>
+
+            <?= $form->field($model, 'password')->passwordInput() ?>
+
+            <?= $form->field($model, 'confirm_password')->passwordInput() ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('<i class="fa fa-user-plus"></i> Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                <?= Html::a('<i class="fa fa-arrow-left"></i> Back To Login', ['site/login'], ['class' => 'btn btn-default']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>

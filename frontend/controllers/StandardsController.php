@@ -237,7 +237,6 @@ class StandardsController extends Controller
     // return a json associative array of clause - average subclauses statuses
     public function actionAnalysis($id)
     {
-
         $standard = $this->findModel($id);
         $clauses = $standard->clauses;
         $data = [];
@@ -246,15 +245,20 @@ class StandardsController extends Controller
             if (empty($clause->subClauses)) {
                 continue;
             }
-
             $data[] = [
                 $clause->title => Yii::$app->formatter->asDecimal($clause->getSubClausesAverageStatus(), 1)
             ];
-
         }
-
         return $data;
 
+    }
+
+    // Demo view test
+    public function actionTest()
+    {
+        // render without layout
+
+        return $this->render('demodash');
     }
 
 }

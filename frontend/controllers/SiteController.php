@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use app\models\Standards;
 use yii\filters\VerbFilter;
@@ -30,7 +31,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => [
+                    'logout',
+                    'signup',
+                    'index',
+                    'create',
+                    'update',
+                    'delete',
+                    'view',
+                ],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -38,7 +47,14 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => [
+                            'logout',
+                            'index',
+                            'create',
+                            'update',
+                            'delete',
+                            'view',
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -87,6 +103,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->layout = 'guest';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -155,6 +172,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        $this->layout = 'guest';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
@@ -163,6 +181,7 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+            'tenants' => ArrayHelper::map(\app\models\Tenants::find()->all(), 'id', 'name'),
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use app\models\Tenants;
 use solutosoft\multitenant\MultiTenantRecord;
 use solutosoft\multitenant\TenantInterface;
 use Yii;
@@ -67,6 +68,8 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['tenant_id', 'integer'], // Ensure tenant_id is an integer
+            ['tenant_id', 'exist', 'skipOnError' => true, 'targetClass' => Tenants::class, 'targetAttribute' => ['tenant_id' => 'id']], // Ensure the tenant exists in your tenants table (if you have one)
         ];
     }
 

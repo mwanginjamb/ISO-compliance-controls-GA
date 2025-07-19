@@ -30,7 +30,8 @@ class AppAsset extends AssetBundle
         '//cdn.jsdelivr.net/npm/chart.js',
         '//cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2',
         'js/tableRender.js',
-        'js/pie.js'
+        'js/pie.js',
+        '//cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
