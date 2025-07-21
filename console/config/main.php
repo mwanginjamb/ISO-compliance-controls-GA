@@ -32,6 +32,7 @@ return [
             ],
         ],
         'user' => [
+            'class' => 'yii\web\User',
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
