@@ -12,9 +12,85 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Standards'), 'url' =
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<use class="visualization-view">
+<div class="standards-visualization">
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
+
+    <!-- Top Stats -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>0%</h5>
+                <p class="text-muted mb-1">Overall Compliance</p>
+                <div class="progress">
+                    <div class="progress-bar bg-info" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5 class="text-success">0%</h5>
+                <p class="text-muted mb-1">Assessment Progress</p>
+                <small class="text-muted">0 of 44 clauses</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-danger">
+                <h5>0</h5>
+                <p class="mb-0">Non-Compliant</p>
+                <small>Requires immediate attention</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 text-warning">
+                <h5>0</h5>
+                <p class="mb-0">Partially Compliant</p>
+                <small>Needs improvement</small>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Compliance by Category -->
+    <div class="card p-3 mt-3">
+        <h6>Compliance by Category</h6>
+        <div class="row">
+            <!-- Sample category item (repeat or loop through categories) -->
+            <div class="col-md-3 mb-3">
+                <h6 class="text-primary">Improvement</h6>
+                <p>0%<br><small>0 of 3 assessed</small></p>
+                <div class="progress">
+                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6 class="text-primary">Context</h6>
+                <p>0%<br><small>0 of 5 assessed</small></p>
+                <div class="progress">
+                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6 class="text-primary">Leadership</h6>
+                <p>0%<br><small>0 of 4 assessed</small></p>
+                <div class="progress">
+                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <h6 class="text-primary">Planning</h6>
+                <p>0%<br><small>0 of 4 assessed</small></p>
+                <div class="progress">
+                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                </div>
+            </div>
+            <!-- Add the remaining categories similarly: Support, Operation, Technology, etc. -->
+        </div>
+    </div>
+
 
     <!-- Provide a lengend key for score scales -->
     <div class="row">
@@ -97,9 +173,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="standard d-none"><?= Yii::$app->request->get('id') ?></div>
-    <?php
+</div>
+<?php
 
-    $script = <<<JS
+$script = <<<JS
     async function drawChart() {
         try{
         const id = +$('.standard').text();
@@ -244,5 +321,5 @@ $this->params['breadcrumbs'][] = $this->title;
     
     drawChart();    
 JS;
-    $this->registerJs($script);
-    ?>
+$this->registerJs($script);
+?>

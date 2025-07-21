@@ -107,38 +107,43 @@ CSS;
                     <!-- Sidebar -->
                     <div class="col-md-2 sidebar">
                         <div class="px-3">
-                            <h5>ISO 27001:2022</h5>
+                            <h5><?= Yii::$app->name ?></h5>
                             <small class="text-muted">Gap Analysis Portal</small>
                         </div>
                         <hr>
                         <ul class="nav flex-column px-3">
                             <li class="nav-item">
-                                <?= Html::a('Dashboard', ['/site/index'], ['class' => 'nav-link active']) ?>
+                                <?= Html::a('Gap Analysis List', ['/site/index'], ['class' => 'nav-link active']) ?>
                             </li>
                             <li class="nav-item">
-                                <?= Html::a('Clause Details', ['/clause/index'], ['class' => 'nav-link']) ?>
+                                <?= Html::a('Standards', ['/standards/index'], ['class' => 'nav-link']) ?>
                             </li>
                         </ul>
 
-                        <div class="px-3 mt-4 d-flex justify-content-between align-items-center">
-                            <h6 class="text-muted mb-0">Assessments</h6>
-                            <button class="btn btn-sm btn-primary">+ New</button>
-                        </div>
+                        <?php if (Yii::$app->utility->currentaction('standards', 'visualization')): ?>
 
-                        <!-- Sample assessment card -->
-                        <div class="card assessment-card mx-3 mt-2 p-2">
-                            <small class="font-weight-bold">Initial Gap Analysis 2024</small>
-                            <small class="text-muted d-block">Sample Organization</small>
-                            <div class="d-flex justify-content-between mt-1">
-                                <small class="text-muted">0% complete</small>
-                                <small class="text-primary font-weight-bold">0% compliant</small>
+                            <div class="px-3 mt-4 d-flex justify-content-between align-items-center">
+                                <h6 class="text-muted mb-0">Assessments</h6>
+                                <!-- <button class="btn btn-sm btn-primary">+ New</button> -->
                             </div>
-                        </div>
+
+                            <!-- Sample assessment card -->
+                            <div class="card assessment-card mx-3 mt-2 p-2">
+                                <small class="font-weight-bold">Initial Gap Analysis</small>
+                                <small class="text-muted d-block">Sample Organization</small>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <small class="text-muted">0% complete</small>
+                                    <small class="text-primary font-weight-bold">0% compliant</small>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Main Content -->
-                    <div class="col-md-10 p-4">
-                        <?= $content ?>
+                    <div class="container">
+                        <div class="col-md-10 p-1">
+                            <?= $content ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,7 +154,7 @@ CSS;
 
     <!-- Footer -->
     <footer class="footer text-center">
-        &copy; <?= date('Y') ?> MyCompany — ISO 27001:2022 Gap Analysis Portal
+        &copy; <?= date('Y') ?> <?= env('DEVELOPER') ?> — Compliance Gap Analysis Portal
     </footer>
 
     <?php $this->endBody() ?>

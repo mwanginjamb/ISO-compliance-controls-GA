@@ -130,6 +130,28 @@
                         </div>
                     </div>
 
+
+                    <!-- Compliance Distribution and Gaps -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="card p-3">
+                                <h6>Compliance Distribution</h6>
+                                <div><span class="badge-dot bg-success"></span> Compliant - 0</div>
+                                <div><span class="badge-dot bg-warning"></span> Partially Compliant - 0</div>
+                                <div><span class="badge-dot bg-danger"></span> Non-Compliant - 0</div>
+                                <div><span class="badge-dot bg-secondary"></span> Not Applicable - 0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card p-3">
+                                <h6>Gaps by Priority</h6>
+                                <div><span class="badge-dot bg-danger"></span> High Priority - 0</div>
+                                <div><span class="badge-dot bg-warning"></span> Medium Priority - 0</div>
+                                <div><span class="badge-dot bg-primary"></span> Low Priority - 0</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Compliance by Category -->
                     <div class="card p-3 mt-3">
                         <h6>Compliance by Category</h6>

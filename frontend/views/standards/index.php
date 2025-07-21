@@ -15,36 +15,51 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="standards-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card card-info">
+        <div class="card-header">
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Standards'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <div class="d-flex justify-content-between">
+                <div class="card-title align-self-center">
+                    <h2 class="justify-content-center"><?= Html::encode($this->title) ?></h2>
+                </div>
+                <div class="card-tools">
+                    <?= Html::a(Yii::t('app', 'Add Standard'), ['create'], ['class' => 'btn btn-success']) ?>
+                </div>
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            </div>
+        </div>
+        <div class="card-body">
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'standard',
-            'created_at',
-            'updated_at',
-            'created_by',
-            //'updated_by',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Standards $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
+                    // 'id',
+                    'standard',
+                    'created_at:datetime',
+                    //'updated_at',
+                    //'created_by',
+                    //'updated_by',
+                    [
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, Standards $model, $key, $index, $column) {
+                                        return Url::toRoute([$action, 'id' => $model->id]);
+                                    }
+                    ],
+                ],
+            ]); ?>
 
-    <?php Pjax::end(); ?>
+            <?php Pjax::end(); ?>
+
+        </div>
+    </div>
+
+
+
+
 
 </div>
