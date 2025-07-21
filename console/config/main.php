@@ -31,6 +31,12 @@ return [
                 ],
             ],
         ],
+        'user' => [
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => false,
+            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'enableSession' => false
+        ],
     ],
     'params' => $params,
 ];
