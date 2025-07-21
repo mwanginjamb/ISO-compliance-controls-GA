@@ -15,34 +15,42 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tenants-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card mt-3">
+        <div class="card-header">
+            <h1 class="card-title"><?= Html::encode($this->title) ?></h1>
+            <div class="card-tools">
+                <?= Html::a(Yii::t('app', 'Create Tenants'), ['create'], ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
+        <div class="card-body">
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Tenants'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    'id',
+                    'name',
+                    'database_name',
+                    'unique_identifier',
+                    'created_at',
+                    //'updated_at',
+                    [
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, Tenants $model, $key, $index, $column) {
+                                        return Url::toRoute([$action, 'id' => $model->id]);
+                                    }
+                    ],
+                ],
+            ]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        </div>
+    </div>
 
-            'id',
-            'name',
-            'database_name',
-            'unique_identifier',
-            'created_at',
-            //'updated_at',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Tenants $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
+
+
 
 
 </div>

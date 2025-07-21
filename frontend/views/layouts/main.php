@@ -118,6 +118,9 @@ CSS;
                             <li class="nav-item">
                                 <?= Html::a('Standards', ['/standards/index'], ['class' => 'nav-link']) ?>
                             </li>
+                            <li class="nav-item">
+                                <?= Html::a('Tenants', ['/tenants/index'], ['class' => 'nav-link']) ?>
+                            </li>
                         </ul>
 
                         <?php if (Yii::$app->utility->currentaction('standards', 'visualization')): ?>
