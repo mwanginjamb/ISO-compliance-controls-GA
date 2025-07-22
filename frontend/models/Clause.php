@@ -114,7 +114,7 @@ class Clause extends \yii\db\ActiveRecord
 
     public function getPercentage()
     {
-        return $this->getSubClausesAverageStatus() * 100;
+        return ($this->getSubClausesAverageStatus() / 3) * 100;
     }
 
     // Get Status Descritive Status Text

@@ -63,8 +63,12 @@ $averageCompliance = Yii::$app->dashboard->getAverageCompliance($model->id)
         <h6>Compliance by Clauses</h6>
         <div class="row">
             <?php foreach ($clauses as $c): ?>
+
                 <div class="col-md-3 mb-3">
-                    <h6 class="text-primary"><?= $c->title ?></h6>
+                    <h6 class="text-<?= Yii::$app->utility->getPseudoClassFromConfig($c->getSubClausesAverageStatus()) ?>">
+                        <?= $c->title ?> <span
+                            class="badge badge-secondary right"><?= $c->getSubClausesAverageStatus() ?></span>
+                    </h6>
                     <p class="text-muted"> <?= $c->getSubClauses()->count() ?> requirements</small></p>
                     <div class="progress">
                         <div class="progress-bar <?= $c->getBadge($c->getSubClausesAverageStatus()) ?>"
