@@ -28,7 +28,7 @@ class Dashboard extends Component
         foreach ($clauses as $clause) {
             $average += $clause->getSubClausesAverageStatus();
         }
-        return $average / count($clauses);
+        return Yii::$app->formatter->asDecimal($average / count($clauses), 2);
     }
 
     // Get Number of Clauses By Compliance Levels based on score thresholds

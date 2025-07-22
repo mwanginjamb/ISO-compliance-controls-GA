@@ -279,4 +279,17 @@ class Utility extends Component
         }
         return 'bg-secondary'; // Handle cases outside your defined ranges
     }
+
+    // pseudo clases for non-background representations like text
+    public static function getPseudoClassFromConfig(float $averageStatus): string
+    {
+        $thresholds = Yii::$app->params['app.classes'];
+
+        foreach ($thresholds as $class => $range) {
+            if ($averageStatus >= $range['min'] && $averageStatus <= $range['max']) {
+                return $class;
+            }
+        }
+        return 'secondary'; // Handle cases outside your defined ranges
+    }
 }

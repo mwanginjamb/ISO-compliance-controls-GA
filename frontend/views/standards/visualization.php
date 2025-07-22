@@ -10,8 +10,9 @@ use yii\widgets\DetailView;
 $this->title = 'Gap Analysis Visual for ' . $model->standard;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Standards'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
-?>
+// \yii\web\YiiAsset::register($this);
+$averageCompliance = Yii::$app->dashboard->getAverageCompliance($model->id)
+    ?>
 <div class="standards-visualization">
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
@@ -29,9 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-md-3">
             <div class="card p-3">
-                <h5 class="text-success"><?= Yii::$app->dashboard->getAverageCompliance($model->id) ?></h5>
+                <h5 class="text-<?= Yii::$app->utility->getPseudoClassFromConfig($averageCompliance) ?>">
+                    <?= $averageCompliance ?>
+                </h5>
                 <p class="text-muted mb-1">Assessment Progress out of 3</p>
-                <small class="text-muted"> <?= count($clauses) ?> clause(s)</small>
+                <small class="text-muted"> <?= count($clauses) ?> clause(s) -
+                    <?= Yii::$app->utility->getDescriptiveStatusFromConfig($averageCompliance) ?></small>
             </div>
         </div>
         <div class="col-md-3">

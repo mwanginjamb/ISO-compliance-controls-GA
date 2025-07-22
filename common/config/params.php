@@ -18,6 +18,12 @@ return [
         'bg-info text-dark' => ['min' => 1.5, 'max' => 2.4999999],
         'bg-success' => ['min' => 2.5, 'max' => 3.0],
     ],
+    'app.classes' => [
+        'danger' => ['min' => 0, 'max' => 0.4999999], // Or 'threshold' => 0.5
+        'warning text-dark' => ['min' => 0.5, 'max' => 1.4999999],
+        'info text-dark' => ['min' => 1.5, 'max' => 2.4999999],
+        'success' => ['min' => 2.5, 'max' => 3.0],
+    ],
     'decimalPlaces' => 3,
     'generalTitle' => env('APP_NAME'),
     'demoCompany' => env('CUSTOMER')
