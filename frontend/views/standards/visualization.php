@@ -21,29 +21,29 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3 averagecompliance">
             <div class="card p-3">
                 <h5>0%</h5>
-                <p class="text-muted mb-1">Overall Compliance</p>
+                <p class="text-muted mb-1">Weighted Overall Compliance</p>
                 <div class="progress">
-                    <div class="progress-bar bg-info" style="width: 0%"></div>
+                    <div class="progress-bar" style="width: 0%"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3">
-                <h5 class="text-success">0%</h5>
-                <p class="text-muted mb-1">Assessment Progress</p>
-                <small class="text-muted">0 of 44 clauses</small>
+                <h5 class="text-success"><?= Yii::$app->dashboard->getAverageCompliance($model->id) ?></h5>
+                <p class="text-muted mb-1">Assessment Progress out of 3</p>
+                <small class="text-muted"> <?= count($clauses) ?> clause(s)</small>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-danger">
-                <h5>0</h5>
+                <h5><?= Yii::$app->dashboard->getNonCompliantClauses($model->id) ?></h5>
                 <p class="mb-0">Non-Compliant</p>
                 <small>Requires immediate attention</small>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card p-3 text-warning">
-                <h5>0</h5>
+                <h5><?= Yii::$app->dashboard->getPartiallyCompliantClauses($model->id) ?></h5>
                 <p class="mb-0">Partially Compliant</p>
                 <small>Needs improvement</small>
             </div>
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-    <!-- Compliance by Category -->
+    <!-- Compliance by Clause -->
     <div class="card p-3 mt-3">
         <h6>Compliance by Clauses</h6>
         <div class="row">
@@ -63,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <h6 class="text-primary"><?= $c->title ?></h6>
                     <p class="text-muted"> <?= $c->getSubClauses()->count() ?> requirements</small></p>
                     <div class="progress">
-                        <div class="progress-bar bg-primary" style="width: <?= $c->getPercentage() ?>%"></div>
+                        <div class="progress-bar <?= $c->getBadge($c->getSubClausesAverageStatus()) ?>"
+                            style="width: <?= $c->getPercentage() ?>%"></div>
                     </div>
                 </div>
 
