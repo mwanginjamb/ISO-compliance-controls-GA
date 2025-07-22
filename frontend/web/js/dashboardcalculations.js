@@ -2,8 +2,8 @@ const id = +$('.standard').text();
 const Url = './analysis?id=' + id;
 
 // 1. Fetch clause scores from the backend
-const response = await fetch(Url);
-const rawArray = await response.json();
+const response = fetch(Url);
+const rawArray = response.json();
 
 // 2. Flatten into a map: { clause: score }
 const clauseData = {};
