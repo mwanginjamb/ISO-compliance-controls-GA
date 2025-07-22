@@ -27,10 +27,13 @@ async function fetchData() {
 
 
 function displayAverageProgress(averageScore) {
+    console.log(`Average Score: ${averageScore}`);
     const percentage = (averageScore / 3) * 100;
     const percentageElement = document.querySelector('.averagecompliance h5');
     const progressBarElement = document.querySelector('.averagecompliance .progress-bar');
     const barColor = getColor(averageScore); // Get color based on average score
+
+    console.log(`Percentage: ${percentage}%`);
 
     if (percentageElement) {
         percentageElement.textContent = `${Math.round(percentage)}%`;
@@ -42,3 +45,4 @@ function displayAverageProgress(averageScore) {
     }
 }
 
+fetchData();
