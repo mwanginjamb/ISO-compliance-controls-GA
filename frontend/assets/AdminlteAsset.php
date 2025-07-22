@@ -38,7 +38,7 @@ class AdminlteAsset extends AssetBundle
         '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css',
         // 'css/steps.css',
         // 'css/validation.css',
-        'css/dblClick.mobile.css',
+        //'css/dblClick.mobile.css',
         // https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css',
 
         // 'css/bstimepicker.css',
@@ -52,41 +52,26 @@ class AdminlteAsset extends AssetBundle
         'plugins/bootstrap/js/bootstrap.bundle.min.js',
         'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
         'dist/js/adminlte.min.js',
-        // 'dist/js/demo.js',
+
         'plugins/jquery-mousewheel/jquery.mousewheel.js',
         'plugins/raphael/raphael.min.js',
         'plugins/jquery-mapael/jquery.mapael.min.js',
-        // 'plugins/jquery-mapael/maps/usa_states.min.js',
-        'plugins/chart.js/Chart.min.js',
-        // 'dist/js/pages/dashboard2.js',
 
-        // 'plugins/sparklines/sparkline.js',
-        // 'plugins/jqvmap/jquery.vmap.min.js',
-        // 'plugins/jqvmap/maps/jquery.vmap.usa.js',
-        // 'plugins/jquery-knob/jquery.knob.min.js',
-        'plugins/moment/moment.min.js',
-        // 'plugins/daterangepicker/daterangepicker.js',
-
-        'plugins/summernote/summernote-bs4.min.js',
+        //'plugins/chart.js/Chart.min.js',
+        // 'plugins/summernote/summernote-bs4.min.js',
         'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
         'plugins/jquery-mousewheel/jquery.mousewheel.js',
-        'plugins/raphael/raphael.min.js',
-        'plugins/jquery-mapael/jquery.mapael.min.js',
-        'plugins/jquery-mapael/maps/usa_states.min.js',
-        'plugins/chart.js/Chart.min.js',
+        // 'plugins/raphael/raphael.min.js',
+        //'plugins/jquery-mapael/jquery.mapael.min.js',
+        //'plugins/jquery-mapael/maps/usa_states.min.js',
+        //'plugins/chart.js/Chart.min.js',
         'plugins/sweetalert2/sweetalert2.min.js',
 
         '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js',
-
-        // 'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js',
-        // 'https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js ',
-        // 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.min.js',
         // 'js/app.js',
         'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js',
         'https://cdn.jsdelivr.net/npm/sweetalert2@9', //Sweet Alert
-        'Js/custom.js',
-        'Js/modal.js',
-
+        // 'Js/modal.js',
         '//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js',
         '//cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js',
         '//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js',
@@ -96,9 +81,14 @@ class AdminlteAsset extends AssetBundle
         '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js',
         '//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js',
         '//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js',
-
-
-
+        'js/custom.js',
+        'js/tinymce.js',
+        'js/accordion.js',
+        '//cdn.jsdelivr.net/npm/chart.js',
+        '//cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2',
+        'js/tableRender.js',
+        'js/pie.js',
+        'js/dashboardcalculations.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

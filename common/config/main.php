@@ -21,6 +21,9 @@ return [
         'sharepoint' => [
             'class' => 'common\Library\Sharepoint'
         ],
+        'dashboard' => [
+            'class' => 'common\Library\Dashboard'
+        ],
         'assetManager' => [
             'appendTimestamp' => true
         ],

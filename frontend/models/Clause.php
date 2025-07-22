@@ -112,6 +112,11 @@ class Clause extends \yii\db\ActiveRecord
         return $this->subclauses_average_status = floatval($this->getSubClauses()->average('average_status')) ?: 0.00;
     }
 
+    public function getPercentage()
+    {
+        return $this->getSubClausesAverageStatus() * 100;
+    }
+
     // Get Status Descritive Status Text
     public function getVerdict()
     {

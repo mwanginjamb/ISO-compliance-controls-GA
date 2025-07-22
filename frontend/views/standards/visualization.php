@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <!-- Top Stats -->
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 averagecompliance">
             <div class="card p-3">
                 <h5>0%</h5>
                 <p class="text-muted mb-1">Overall Compliance</p>
@@ -56,38 +56,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <!-- Compliance by Category -->
     <div class="card p-3 mt-3">
-        <h6>Compliance by Category</h6>
+        <h6>Compliance by Clauses</h6>
         <div class="row">
-            <!-- Sample category item (repeat or loop through categories) -->
-            <div class="col-md-3 mb-3">
-                <h6 class="text-primary">Improvement</h6>
-                <p>0%<br><small>0 of 3 assessed</small></p>
-                <div class="progress">
-                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+            <?php foreach ($clauses as $c): ?>
+                <div class="col-md-3 mb-3">
+                    <h6 class="text-primary"><?= $c->title ?></h6>
+                    <p class="text-muted"> <?= $c->getSubClauses()->count() ?> requirements</small></p>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" style="width: <?= $c->getPercentage() ?>%"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6 class="text-primary">Context</h6>
-                <p>0%<br><small>0 of 5 assessed</small></p>
-                <div class="progress">
-                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6 class="text-primary">Leadership</h6>
-                <p>0%<br><small>0 of 4 assessed</small></p>
-                <div class="progress">
-                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-3">
-                <h6 class="text-primary">Planning</h6>
-                <p>0%<br><small>0 of 4 assessed</small></p>
-                <div class="progress">
-                    <div class="progress-bar bg-primary" style="width: 0%"></div>
-                </div>
-            </div>
-            <!-- Add the remaining categories similarly: Support, Operation, Technology, etc. -->
+
+            <?php endforeach ?>
+
+
+
+
         </div>
     </div>
 
@@ -319,7 +303,9 @@ $script = <<<JS
         }
     }
     
-    drawChart();    
+    drawChart(); 
+    
+   
 JS;
 $this->registerJs($script);
 ?>

@@ -91,8 +91,15 @@ class StandardsController extends Controller
 
     public function actionVisualization($id)
     {
+        $standard = $this->findModel($id);
+        // clauses from the 4th clause - use a filter
+        $clauses = array_filter($standard->clauses, function ($clause) {
+            // return $clause->analyzable == TRUE;
+            return $clause->id >= 4;
+        });
         return $this->render('visualization', [
-            'model' => $this->findModel($id),
+            'model' => $standard,
+            'clauses' => $clauses
         ]);
     }
 
