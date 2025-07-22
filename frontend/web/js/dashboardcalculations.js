@@ -14,16 +14,20 @@ async function fetchData() {
         clauseData[clause] = parseFloat(value); // Ensure score is numeric
     });
 
-    const getColor = (score) => {
-        if (score < 0.5) return '#e74c3c';         // Not Implemented
-        if (score < 1.5) return '#f39c12';         // Partially Implemented
-        if (score < 2.5) return '#f1c40f';         // Mostly Implemented
-        return '#2ecc71';                          // Fully Implemented
-    };
 
-    const avgScore = dataValues.reduce((sum, score) => sum + score, 0) / dataValues.length;
+
+    // 3. Calculate average score from fetched data
+    const scores = Object.values(clauseData);
+    const avgScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
     displayAverageProgress(avgScore);
 }
+
+const getColor = (score) => {
+    if (score < 0.5) return '#e74c3c';         // Not Implemented
+    if (score < 1.5) return '#f39c12';         // Partially Implemented
+    if (score < 2.5) return '#f1c40f';         // Mostly Implemented
+    return '#2ecc71';                          // Fully Implemented
+};
 
 
 function displayAverageProgress(averageScore) {
