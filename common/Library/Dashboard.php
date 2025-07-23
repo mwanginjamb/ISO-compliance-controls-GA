@@ -48,7 +48,7 @@ class Dashboard extends Component
         $standard = Standards::findOne($id);
         $clauses = array_filter($standard->clauses, function ($clause) {
             // filter by subclauseAverageStatus
-            return $clause->getSubClausesAverageStatus() > 0.5 && $clause->getSubClausesAverageStatus() < 1.5;
+            return $clause->getSubClausesAverageStatus() >= 0.5 && $clause->getSubClausesAverageStatus() < 1.5;
         });
         return count($clauses);
     }
