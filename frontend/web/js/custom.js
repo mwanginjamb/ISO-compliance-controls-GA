@@ -44,7 +44,7 @@ function closeInput(elm) {
     td.removeChild(elm);
 
     // Update the tds innerHTML with the new (potentially rich) content
-    td.innerHTML = value.trim();
+    td.innerHTML = value ? value.trim() : value;
 
     const data = td.dataset;
     console.log(`The Data Set`);
