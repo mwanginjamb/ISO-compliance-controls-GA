@@ -26,7 +26,8 @@ use yii\bootstrap5\Html;
                                 'data-description' => 'requirement - ' . date('Y-m-d H:i:s'),
                                 'data-template' => 1,
                                 'data-status' => 0,
-                                'data-endpoint' => Url::home(true) . 'apiv1/requirements'
+                                'data-endpoint' => Url::home(true) . 'apiv1/requirements',
+                                'data-reload' => 1
                             ]) ?>
                             </th>
                         </tr>

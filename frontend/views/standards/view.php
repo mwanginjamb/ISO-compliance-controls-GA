@@ -92,13 +92,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </div>
                                 </td>
                                 <td colspan="2" data-key="<?= $c->id ?>" data-name="analyzable" data-service="<?= $endpoint ?>"
-                                    ondblclick="addInput(this,'checkbox', event)">
+                                    ondblclick="addInput(this,'checkbox', event)" data-reload="1">
                                     <?= $c->analyzable? 'Yes' : 'No' ?>
                                 </td>
 
                             </tr>
                             <tr class="child">
-                                <td colspan="4">
+                                <td colspan="5">
                                     <!-- subclauses -->
                                     <table class="table table-bordered">
                                         <thead>
@@ -116,7 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-template' => 1,
                                                         'data-clause_id' => $c->id,
                                                         'data-endpoint' => Url::home(true) . 'apiv1/sub-clauses',
-                                                        //'data-reload' => 1
+                                                        'data-reload' => 1
                                                     ]) ?>
                                                 </td>
                                             </tr>
