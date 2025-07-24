@@ -144,7 +144,7 @@ function closeInput(elm) {
 
 function addInput(elm, type = false, event) {
     console.log('Event ...');
-    console.log(event);
+    console.log(event.target.value);
     if (elm.getElementsByTagName('input').length > 0) return;
 
     var value = elm.innerHTML;
@@ -161,13 +161,8 @@ function addInput(elm, type = false, event) {
     input.style.width = "100%";
 
     if (type === 'checkbox') {
-        if (value.trim().toLowerCase() === 'yes') {
-            input.setAttribute('checked', 'checked');
-        } else if (value.trim().toLowerCase() === 'no') {
-            input.checked = false;
-            input.setAttribute('value', false);
-        }
-
+        //input.checked = event.target.value;
+        input.checked = (value.trim().toLowerCase() === 'yes') ? true : false;
     }
 
     input.setAttribute('class', 'form-control');
