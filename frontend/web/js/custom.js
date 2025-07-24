@@ -162,7 +162,7 @@ function addInput(elm, type = false, event) {
 
     if (type === 'checkbox') {
         //input.checked = event.target.value;
-        input.checked = (value.trim().toLowerCase() === 'yes');
+        input.checked = (value.trim().toLowerCase() === 'yes') ? true : false;
 
     }
 
