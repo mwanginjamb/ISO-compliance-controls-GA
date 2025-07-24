@@ -144,10 +144,11 @@ function closeInput(elm) {
 
 function addInput(elm, type = false, event) {
     console.log('Event ...');
-    console.log(event.target.value);
+
     if (elm.getElementsByTagName('input').length > 0) return;
 
     var value = elm.innerHTML;
+    console.log(value);
     elm.innerHTML = '';
 
     var input = document.createElement('input');
