@@ -17,6 +17,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $standard_id
+ * @property boolean|null $analyzable
  *
  * @property Standards $standards
  * @property SubClause[] $subClauses
@@ -57,6 +58,7 @@ class Clause extends \yii\db\ActiveRecord
             [['title'], 'string', 'max' => 250],
             [['standard_id'], 'exist', 'skipOnError' => true, 'targetClass' => Standards::class, 'targetAttribute' => ['standard_id' => 'id']],
             ['subclauses_average_status', 'safe'],
+            ['analyzable', 'boolean'],
         ];
     }
 

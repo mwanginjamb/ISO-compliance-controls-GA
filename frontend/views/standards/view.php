@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th>#</th>
                             <th class="text-capitalize text-bold text-center text-info">Clause</th>
                             <th>Compliance Status</th>
+                            <th>Analyzable ?</th>
                             <th class="text-capitalize text-bold text-body text-center">
                                 <div class="float-right">
                                     <?= Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
@@ -58,7 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'data-reload' => 1
                                     ]) ?>
                                 </div>
-
                             </th>
                         </tr>
                     </thead>
@@ -67,6 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="templateRow parent" style="display: none">
                             <td data-name="id">1</td>
                             <td data-name="title">5</td>
+                            <td data-name="">3</td>
+                            <td data-name="analyzable">0</td>
                             <td>
                                 <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
                             </td>
@@ -84,10 +86,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ondblclick="addInput(this)">
                                     <?= $c->title ?>
                                 </td>
-                                <td colspan="2">
+                                <td>
                                     <div class="badge rounded-pill <?= $c->badge ?>">
                                         <?= Yii::$app->formatter->asDecimal($c->getSubClausesAverageStatus(), 1) . ' - ' . $c->verdict ?>
                                     </div>
+                                </td>
+                                <td colspan="2" data-key="<?= $c->id ?>" data-name="analyzable" data-service="<?= $endpoint ?>"
+                                    ondblclick="addInput(this,'checkbox', event)">
+                                    <?= $c->analyzable? 'Yes' : 'No' ?>
                                 </td>
 
                             </tr>
@@ -121,6 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <td data-name="number"></td>
                                                 <td data-name="sub_clause"></td>
                                                 <td data-name="compliance_status">N/A</td>
+
                                                 <td>
                                                     <?= Html::a('<i class="bi bi-trash"></i>', '#', [
                                                         'class' => 'btn btn-danger btn-sm delete',

@@ -33,6 +33,8 @@ function closeInput(elm) {
 
     /** Handle Checkbox state */
     var child = td.children[0];
+    // inspect the child type
+    console.log('Child Type: ' + child.type);
     if (child.type == 'checkbox') {
         value = (child.checked) ? 1 : 0;
     }
@@ -42,7 +44,7 @@ function closeInput(elm) {
     td.removeChild(elm);
 
     // Update the tds innerHTML with the new (potentially rich) content
-    td.innerHTML = value.trim();
+    td.innerHTML = value ? value.trim : '';
 
     const data = td.dataset;
     console.log(`The Data Set`);
@@ -140,7 +142,9 @@ function closeInput(elm) {
     });
 }
 
-function addInput(elm, type = false, field = false) {
+function addInput(elm, type = false, event) {
+    console.log('Event ...');
+    console.log(event);
     if (elm.getElementsByTagName('input').length > 0) return;
 
     var value = elm.innerHTML;
@@ -157,7 +161,8 @@ function addInput(elm, type = false, field = false) {
     input.style.width = "100%";
 
     if (type === 'checkbox') {
-        input.checked = event.target.value;
+        //input.checked = event.target.value;
+        input.checked = (value.trim().toLowerCase() === 'yes');
 
     }
 
