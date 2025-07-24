@@ -33,18 +33,22 @@ function closeInput(elm) {
 
     /** Handle Checkbox state */
     var child = td.children[0];
-    // inspect the child type
-    console.log('Child Type: ' + child.type);
     if (child.type == 'checkbox') {
-        value = (child.checked) ? 1 : 0;
+        value = (child.checked) ? +1 : +0;
     }
+
+
     /** Finish handling checkbox state */
 
     // Remove textarea / input from DOM
     td.removeChild(elm);
 
     // Update the tds innerHTML with the new (potentially rich) content
-    td.innerHTML = value ? value.trim() : value;
+    if (child.type == 'checkbox') {
+        td.innerHTML = (value === +1) ? 'Yes' : 'No';
+    } else {
+        td.innerHTML = value;
+    }
 
     const data = td.dataset;
     console.log(`The Data Set`);
@@ -158,12 +162,18 @@ function addInput(elm, type = false, event) {
         input.setAttribute('type', 'text');
     }
 
-    input.setAttribute('value', value.trim());
+
     input.style.width = "100%";
 
     if (type === 'checkbox') {
-        //input.checked = event.target.value;
-        input.checked = (value.trim().toLowerCase() === 'yes') ? true : false;
+        input.setAttribute('value', value.trim().toLowerCase() === 'yes' ? 1 : 0);
+        if (value.trim().toLowerCase() === 'yes') {
+            input.checked = true;
+        } else if (value.trim().toLowerCase() === 'no') {
+            input.checked = false;
+        }
+    } else {
+        input.setAttribute('value', value.trim());
     }
 
     input.setAttribute('class', 'form-control');

@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </td>
                                 <td colspan="2" data-key="<?= $c->id ?>" data-name="analyzable" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this,'checkbox', event)" data-reload="1">
-                                    <?= $c->analyzable? 'Yes' : 'No' ?>
+                                    <?= $c->analyzable ? 'Yes' : 'No' ?>
                                 </td>
 
                             </tr>
