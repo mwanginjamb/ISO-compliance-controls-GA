@@ -161,8 +161,12 @@ function addInput(elm, type = false, event) {
     input.style.width = "100%";
 
     if (type === 'checkbox') {
-        //input.checked = event.target.value;
-        input.checked = (value.trim().toLowerCase() === 'yes') ? true : false;
+        if (value.trim().toLowerCase() === 'yes') {
+            input.setAttribute('checked', 'checked');
+        } else if (value.trim().toLowerCase() === 'no') {
+            input.checked = false;
+            input.setAttribute('value', false);
+        }
 
     }
 
