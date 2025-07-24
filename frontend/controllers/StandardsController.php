@@ -94,8 +94,7 @@ class StandardsController extends Controller
         $standard = $this->findModel($id);
         // clauses from the 4th clause - use a filter
         $clauses = array_filter($standard->clauses, function ($clause) {
-            // return $clause->analyzable == TRUE;
-            return $clause->id >= 4;
+            return $clause->analyzable == TRUE;
         });
         return $this->render('visualization', [
             'model' => $standard,
@@ -245,7 +244,10 @@ class StandardsController extends Controller
     public function actionAnalysis($id)
     {
         $standard = $this->findModel($id);
-        $clauses = $standard->clauses;
+        // $clauses = $standard->clauses;
+        $clauses = array_filter($standard->clauses, function ($clause) {
+            return $clause->analyzable == TRUE;
+        });
         $data = [];
         foreach ($clauses as $clause) {
             // check if clause has subclauses
@@ -264,7 +266,6 @@ class StandardsController extends Controller
     public function actionTest()
     {
         // render without layout
-
         return $this->render('demodash');
     }
 
