@@ -55,9 +55,8 @@ class Requirements extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'status', 'evidence_path', 'gaps', 'actions_required', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
-            [['description', 'gaps', 'actions_required'], 'string'],
+            [['description', 'gaps', 'actions_required', 'evidence_path'], 'string'],
             [['status', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['evidence_path'], 'string', 'max' => 350],
             [['sub_clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => SubClause::class, 'targetAttribute' => ['sub_clause_id' => 'id']],
         ];
     }
