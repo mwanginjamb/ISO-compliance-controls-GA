@@ -23,16 +23,18 @@ $verifyLink = env('APP_BASE_URL', 'http://utility.com') . '/standards/view?id=' 
             <td>Dear <b><?= $assigneeName ?></b>, <br><br>
                 You are notified to ensure the control / requirement above is complied with before the next audit
                 period, work on:
-                <b> Evidences </b><br>
-                <br>Gaps , id any <br>
-                <br>Actions required for compliance. <br>
-                <br>Give a compliance status analysis based on evidence.
+                <ol>
+                    <li><b> Evidences </b><br></li>
+                    <li><b>Gaps , if any </b></li>
+                    <li><b>Actions required for compliance. </b></li>
+                    <li><b>Give a compliance status analysis based on evidence.</b></li>
+                </ol>
             </td>
         </tr>
         <tr>
             <td style="text-align: left;">
-                <b>Source Clause</b>: <?= $clause->title ?> <br>
-                <br> <b> Source Sub Clause: </b> <?= $subClause->sub_clause ?> <br>
+                <p><b>Source Clause</b>: <?= $clause->title ?> </p>
+                <p> <b> Source Sub Clause: </b> <?= $subClause->sub_clause ?> </p>
             </td>
         </tr>
     </table>

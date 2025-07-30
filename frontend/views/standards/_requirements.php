@@ -63,7 +63,8 @@ use yii\bootstrap5\Html;
                                 <td data-key="<?= $r->id ?>" data-name="actions_required" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="assignee" data-service="<?= $endpoint ?>"
-                                    ondblclick="addDropDown(this,'assignees')">Assignee
+                                    ondblclick="addDropDown(this,'assignees')">
+                                    <?= $r->assignee ?>
                                 </td>
                                 <td>
                                     <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
