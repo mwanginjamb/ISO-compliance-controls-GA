@@ -20,8 +20,7 @@ class Dashboard extends Component
         $standard = Standards::findOne($id);
         // clauses from the 4th clause - use a filter
         $clauses = array_filter($standard->clauses, function ($clause) {
-            // return $clause->analyzable == TRUE;
-            return $clause->id >= 4;
+            return $clause->analyzable == TRUE;
         });
         // calculate average for all clauses
         $average = 0;
@@ -37,7 +36,7 @@ class Dashboard extends Component
         $standard = Standards::findOne($id);
         $clauses = array_filter($standard->clauses, function ($clause) {
             // filter by subclauseAverageStatus
-            return $clause->getSubClausesAverageStatus() <= 0.5;
+            return $clause->analyzable == TRUE && $clause->getSubClausesAverageStatus() <= 0.5;
         });
         return count($clauses);
     }
@@ -48,7 +47,7 @@ class Dashboard extends Component
         $standard = Standards::findOne($id);
         $clauses = array_filter($standard->clauses, function ($clause) {
             // filter by subclauseAverageStatus
-            return $clause->getSubClausesAverageStatus() >= 0.5 && $clause->getSubClausesAverageStatus() < 1.5;
+            return $clause->analyzable == TRUE && $clause->getSubClausesAverageStatus() >= 0.5 && $clause->getSubClausesAverageStatus() < 1.5;
         });
         return count($clauses);
     }
