@@ -21,12 +21,14 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $assignee
  *
  * @property SubClause $subClause
  */
 class Requirements extends \yii\db\ActiveRecord
 {
     const EVENT_EVAL_STATUS = 'eval_status';
+    const EVENT_ASSIGNMENT = 'assignment';
 
     /**
      * {@inheritdoc}
@@ -55,7 +57,7 @@ class Requirements extends \yii\db\ActiveRecord
     {
         return [
             [['description', 'status', 'evidence_path', 'gaps', 'actions_required', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
-            [['description', 'gaps', 'actions_required', 'evidence_path'], 'string'],
+            [['description', 'gaps', 'actions_required', 'evidence_path', 'assignee'], 'string'],
             [['status', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['sub_clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => SubClause::class, 'targetAttribute' => ['sub_clause_id' => 'id']],
         ];
@@ -112,7 +114,17 @@ class Requirements extends \yii\db\ActiveRecord
             $this->trigger(self::EVENT_EVAL_STATUS, $event); // trigger the event
             // log the event and its data
             Yii::info('Event triggered: ' . self::EVENT_EVAL_STATUS, 'calibration');
+        }
 
+        // Trigger Assignment event if assignee is changed
+        if (!$insert && array_key_exists('assignee', $changedAttributes)) {
+            $event = new RequirementsStatusEvent();
+            $event->sub_clause_id = $this->sub_clause_id;
+            $event->assignee = $this->assignee;
+            $event->requirement_id = $this->id;
+            $this->trigger(self::EVENT_ASSIGNMENT, $event); // trigger the event
+            // log the event and its data
+            Yii::info('Event triggered: ' . self::EVENT_ASSIGNMENT, 'calibration');
         }
     }
 

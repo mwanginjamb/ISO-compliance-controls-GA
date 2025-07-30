@@ -34,7 +34,7 @@ class StandardsController extends Controller
                 ],
                 'contentNegotiator' => [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['commit', 'status', 'analysis'],
+                    'only' => ['commit', 'status', 'analysis', 'assignees'],
                     'formatParam' => '_format',
                     'formats' => [
                         'application/json' => \yii\web\Response::FORMAT_JSON
@@ -51,6 +51,7 @@ class StandardsController extends Controller
             'commit',
             'status',
             'analysis',
+            'assignees'
         ];
 
         if (in_array($action->id, $ExceptedActions)) {
@@ -217,6 +218,44 @@ class StandardsController extends Controller
             return "HTTP request failed with error: " . $e->getMessage();
         }
 
+    }
+
+    /* Make a Get request for assignes
+     * The JSON format is:
+     * {
+     *   "90254 - melvineobuya@gmail.com": "OBUYA",
+     *  "90252 - lauraombogo@gmail.com": "LORRAINE",
+     * }
+     */
+
+    public function actionAssignees()
+    {
+        $endpoint = env('ASSIGNEE_ENDPOINT');
+        $client = new Client([
+            'transport' => CurlTransport::class,
+        ]);
+
+        $request = $client->createRequest()
+            ->setMethod('GET')
+            ->setUrl($endpoint)
+            ->addHeaders(['Content-Type' => 'application/json'])
+            ->setFormat(Client::FORMAT_JSON)  // Ensures JSON encoding for request
+            ->setOptions([
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false
+            ]);
+
+        $response = $request->send();
+        Yii::info('Raw response content: ' . $response->content, 'api_debug');
+        if ($response->isOk) { // Check if the response status is 200-299
+            return $response->data; // Return the relevant response data
+        } else {
+            // Log error details if needed and return a clear message
+            return [
+                'status' => $response->statusCode,
+                'error' => $response->data ?? 'Unexpected error occurred'
+            ];
+        }
     }
 
     // Status Drop Down Source

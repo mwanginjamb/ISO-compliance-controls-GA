@@ -20,6 +20,7 @@ use yii\bootstrap5\Html;
                             <th class="text-capitalize text-bold text-info">Evidence</th>
                             <th class="text-capitalize text-bold text-info">Gaps</th>
                             <th class="text-capitalize text-bold text-info">Actions Required</th>
+                            <th>Assignment</th>
                             <th class="text-bold"><?= Html::a('Add a Requirement', Url::home(true) . 'apiv1/requirements', [
                                 'class' => 'btn btn-sm btn-info add',
                                 'data-sub_clause_id' => $sc->id,
@@ -39,6 +40,7 @@ use yii\bootstrap5\Html;
                             <td data-name="status">5</td>
                             <td data-name="evidence_path"></td>
                             <td data-name="gaps"></td>
+                            <td data-name="Assignee"></td>
                             <td data-name="actions_required"></td>
                             <td>
                                 <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
@@ -60,6 +62,9 @@ use yii\bootstrap5\Html;
                                     ondblclick="addTextarea(this)"><?= $r->gaps ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="actions_required" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
+                                <td data-key="<?= $r->id ?>" data-name="assignee" data-service="<?= $endpoint ?>"
+                                    ondblclick="addDropDown(this,'assignees')">Assignee
+                                </td>
                                 <td>
                                     <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
                                     class' => 'btn btn-danger btn-sm delete',
