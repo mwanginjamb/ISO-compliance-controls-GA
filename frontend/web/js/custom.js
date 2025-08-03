@@ -927,8 +927,6 @@ $('.add').on('click', function (e) {
                     }, 100);
                 }
 
-
-
             } else {
                 Toast.fire({
                     type: 'error',
@@ -959,6 +957,13 @@ function addRow(rowResult, data, context) {
         newRow.removeAttribute('id');
         newRow.removeAttribute('style'); // Make it visible
         newRow.setAttribute('data-key', rowResult.id);
+
+
+        // Get the base service endpoint from the "Add" button's data attribute
+        const baseServiceEndpoint = data.endpoint;
+        console.log('Base Endpoint for new row:', baseServiceEndpoint);
+
+
         // Set data-key attribute on each td of the new row
         var tds = newRow.querySelectorAll('td');
         tds.forEach(td => {
@@ -966,15 +971,28 @@ function addRow(rowResult, data, context) {
             td.setAttribute('data-key', rowResult.id);
             const dataName = td.getAttribute('data-name');
             console.log(`Data Name: ${dataName}`);
+            // Set the innerHTML of the td to the corresponding value from the rowResult
             if (rowResult.hasOwnProperty(dataName)) {
                 td.innerHTML = rowResult[dataName] || 'Not Set';
+            }
+
+            // Construct the full service URL by appending the new ID
+            const fullServiceUrl = baseServiceEndpoint.endsWith('/')
+                ? baseServiceEndpoint + rowResult.id
+                : baseServiceEndpoint + '/' + rowResult.id;
+
+            // Check if this TD should have a data-service attribute
+            // We can assume that if it has an ondblclick, it's editable
+            if (td.hasAttribute('ondblclick')) {
+                td.setAttribute('data-service', fullServiceUrl);
+                console.log('New data-service attribute added:', fullServiceUrl);
             }
 
             // get td with a button and add a data-key attr with a Key Value
             let link = td.querySelector('a');
             if (link) {
                 link.setAttribute('data-key', rowResult.id);
-                link.setAttribute('data-service', data.endpoint);
+                link.setAttribute('data-service', fullServiceUrl);
             }
 
         });
@@ -1185,6 +1203,71 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
         console.log(error);
     }
 }
+
+// Event delegation for new Rows, affects tables too
+
+// This new function will handle all event delegation
+function initTableEvents(table) {
+    // Use event delegation on the table body for dblclick events
+    table.addEventListener('dblclick', (event) => {
+        // Check if the double-clicked element is a <td>
+        const target = event.target.closest('td[data-name]');
+        if (!target) return;
+
+        // Based on the data attributes, determine which input function to call
+        if (target.hasAttribute('ondblclick')) {
+            const dblclickAttr = target.getAttribute('ondblclick');
+            // Use a new function to safely execute the on-demand logic
+            executeDblclick(target, dblclickAttr);
+        }
+    });
+}
+
+function executeDblclick(elm, attrValue) {
+    // Parse the function call from the attribute string
+    const regex = /(\w+)\(([^)]*)\)/;
+    const match = attrValue.match(regex);
+    if (!match) return;
+
+    const functionName = match[1];
+    const argsString = match[2].split(',').map(arg => arg.trim());
+    const args = argsString.map(arg => {
+        // Check if the argument is a string (and strip quotes), otherwise return as is.
+        if (arg.startsWith("'") && arg.endsWith("'")) {
+            return arg.substring(1, arg.length - 1);
+        }
+        return arg;
+    });
+
+    switch (functionName) {
+        case 'addTextarea':
+            addTextarea(elm);
+            break;
+        case 'addInput':
+            addInput(elm, args[0]);
+            break;
+        case 'addDropDown':
+            // The `addDropDown` function expects an element, a resource string, and an optional filters object
+            // Here we will need to replicate the logic from your existing ondblclick.
+            // This is a simplified example. You may need to adjust based on the complexity of your filters.
+            const resource = args[0];
+            const filters = args[1] ? JSON.parse(args[1]) : {};
+            addDropDown(elm, resource, filters);
+            break;
+        default:
+            console.warn(`Function "${functionName}" not supported for event delegation.`);
+    }
+}
+
+// Global initialization of event delegation
+document.addEventListener('DOMContentLoaded', () => {
+    const allTables = document.querySelectorAll('table');
+    allTables.forEach(table => {
+        initTableEvents(table);
+    });
+});
+
+
 
 
 

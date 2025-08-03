@@ -36,12 +36,12 @@ use yii\bootstrap5\Html;
                     <tbody>
                         <!-- row template -->
                         <tr class="templateRow" style="display: none">
-                            <td data-name="description"></td>
-                            <td data-name="status">5</td>
-                            <td data-name="evidence_path"></td>
-                            <td data-name="gaps"></td>
-                            <td data-name="Assignee"></td>
-                            <td data-name="actions_required"></td>
+                            <td data-name="description" ondblclick="addTextarea(this)"></td>
+                            <td data-name="status" ondblclick="addDropDown(this,'status')" data-reload="1">5</td>
+                            <td data-name="evidence_path" ondblclick="addTextarea(this)"></td>
+                            <td data-name="gaps" ondblclick="addTextarea(this)"></td>
+                            <td data-name="actions_required" ondblclick="addTextarea(this)"></td>
+                            <td data-name="Assignee" ondblclick="addDropDown(this,'assignees')"></td>
                             <td>
                                 <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
                             </td>
