@@ -20,7 +20,8 @@ use yii\bootstrap5\Html;
                             <th class="text-capitalize text-bold text-info">Evidence</th>
                             <th class="text-capitalize text-bold text-info">Gaps</th>
                             <th class="text-capitalize text-bold text-info">Actions Required</th>
-                            <th>Assignment</th>
+                            <th class="text-capitalize text-bold text-info">Assignment</th>
+                            <th class="text-capitalize text-bold text-info">Timeline</th>
                             <th class="text-bold"><?= Html::a('Add a Requirement', Url::home(true) . 'apiv1/requirements', [
                                 'class' => 'btn btn-sm btn-info add',
                                 'data-sub_clause_id' => $sc->id,
@@ -42,6 +43,7 @@ use yii\bootstrap5\Html;
                             <td data-name="gaps" ondblclick="addTextarea(this)"></td>
                             <td data-name="actions_required" ondblclick="addTextarea(this)"></td>
                             <td data-name="Assignee" ondblclick="addDropDown(this,'assignees')"></td>
+                            <td data-name="timeline" ondblclick="addInput(this,'date')"></td>
                             <td>
                                 <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
                             </td>
@@ -65,6 +67,10 @@ use yii\bootstrap5\Html;
                                 <td data-key="<?= $r->id ?>" data-name="assignee" data-service="<?= $endpoint ?>"
                                     ondblclick="addDropDown(this,'assignees')">
                                     <?= $r->assignee ?>
+                                </td>
+                                <td data-key="<?= $r->id ?>" data-name="timeline" data-service="<?= $endpoint ?>"
+                                    ondblclick="addInput(this,'date')">
+                                    <?= $r->timeline ?>
                                 </td>
                                 <td>
                                     <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['

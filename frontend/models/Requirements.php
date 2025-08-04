@@ -22,6 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $assignee
+ * @property int|null $timeline
  *
  * @property SubClause $subClause
  */
@@ -60,6 +61,7 @@ class Requirements extends \yii\db\ActiveRecord
             [['description', 'gaps', 'actions_required', 'evidence_path', 'assignee'], 'string'],
             [['status', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['sub_clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => SubClause::class, 'targetAttribute' => ['sub_clause_id' => 'id']],
+            ['timeline', 'date', 'format' => 'php:Y-m-d'],
         ];
     }
 
