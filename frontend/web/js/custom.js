@@ -185,15 +185,16 @@ function addInput(elm, type = false, event) {
 function addTextarea(elm) {
     if (elm.getElementsByTagName('textarea').length > 0) return;
 
-    var value = elm.textContent.trim();
+    // FIX: use innerHTML instead of innerText to preserve Rich Text formating
+    var value = elm.innerHTML.trim();
     elm.innerHTML = '';
 
     var input = document.createElement('textarea');
     const uniqueId = 'rte-' + Date.now() + Math.floor(Math.random() * 1000);
     input.setAttribute('id', uniqueId);
     input.setAttribute('rows', 2);
-    //input.setAttribute('value', value);// use placeholder instead of value attribute  
-    input.innerText = value.trim();
+    //FIX: use innerHTML instead of innerText to preserve Rich Text formating 
+    input.innerHtml = value;
     input.style.width = "350px";
     input.setAttribute('class', 'form-control');
     // input.setAttribute('onBlur', 'closeInput(this)'); // Invoked with tinymce context
