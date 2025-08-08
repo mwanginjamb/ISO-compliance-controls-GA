@@ -151,18 +151,12 @@ $role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)
                         <div class="dropdown-divider"></div>
                         <!-- <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-users mx-1"></i> Help Desk', '/issue/create', ['class' => 'dropdown-item', 'title' => 'ESS Help Desk: Escalate any ESS issue via this facility', 'target' => '_blank']) : ''; ?> -->
                         <div class="dropdown-divider"></div>
-                        <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-sign-out-alt mx-1"></i> Logout (' . ucwords(\Yii::$app->user->identity->username . ' - ' . $role) . ')', '/site/logout/', [
+                        <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-sign-out-alt mx-1"></i> Logout (' . ucwords(\Yii::$app->user->identity->username . $role) . ')', '/site/logout/', [
                             'class' => 'dropdown-item',
                             'data' => [
                                 'method' => 'POST'
                             ]
                         ]) : ''; ?>
-                        <div class="dropdown-divider"></div>
-                        <?= (!Yii::$app->user->isGuest) ? Html::a('<i class="fas fa-lock-open mx-1"></i> Update User Details', Url::toRoute(['site/update-user']), ['class' => 'dropdown-item']) : ''; ?>
-
-
-
-
 
 
                     </div>
