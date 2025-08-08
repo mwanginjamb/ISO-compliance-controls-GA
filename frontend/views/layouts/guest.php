@@ -135,7 +135,7 @@ GuestAsset::register($this);
 
 
                 <div class="float-end mr-4">
-                    <p class=""><?= Yii::powered() ?></p>
+                    <p class=""><?= Yii::signature(); ?></p>
                 </div>
 
 
