@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-            <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'email', ['inputOptions' => ['type' => 'email', 'placeholder' => 'Your KEMRI Email']]) ?>
 
             <?= $form->field($model, 'tenant_id')->dropDownList($tenants, ['prompt' => 'Select Business Unit']) ?>
 

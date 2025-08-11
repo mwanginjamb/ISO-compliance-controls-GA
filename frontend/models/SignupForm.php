@@ -37,6 +37,7 @@ class SignupForm extends Model
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'match', 'pattern' => '/^[^@]+@kemri\.go\.ke$/i', 'message' => 'Only kemri.go.ke email addresses are allowed.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
