@@ -27,5 +27,9 @@ return [
         'assetManager' => [
             'appendTimestamp' => true
         ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+            // 'defaultRoles' => ['@'], // authenticated user
+        ],
     ],
 ];

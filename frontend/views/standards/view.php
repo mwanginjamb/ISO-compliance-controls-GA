@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-tools">
                     <div class="btn-group">
                         <?= Html::a('Update standard', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                        <?=  (Yii::$app->user->can('compliance-admin'))? Html::a('Delete', ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [
                                 'confirm' => 'Are you sure you want to delete this item?',
                                 'method' => 'post',
                             ],
-                        ]) ?>
+                        ]):'' ?>
 
                     </div>
                 </div>

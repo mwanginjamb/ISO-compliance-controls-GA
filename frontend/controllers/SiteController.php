@@ -3,11 +3,12 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\helpers\ArrayHelper;
+use app\models\User;
 use yii\web\Controller;
 use app\models\Standards;
 use yii\filters\VerbFilter;
 use common\models\LoginForm;
+use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
@@ -275,6 +276,17 @@ class SiteController extends Controller
 
         return $this->render('resendVerificationEmail', [
             'model' => $model
+        ]);
+    }
+
+
+    // Get User Inventory
+
+    public function actionUsers()
+    {
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status'])->orderBy(['created_at' => SORT_DESC])->all();
+        return $this->render('users', [
+            'users' => $users
         ]);
     }
 }

@@ -38,6 +38,10 @@ return [
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
             'enableSession' => false
         ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+            // 'defaultRoles' => ['compliance-officer']
+        ]
     ],
     'params' => $params,
 ];

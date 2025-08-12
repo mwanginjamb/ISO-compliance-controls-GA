@@ -22,7 +22,7 @@ AdminlteAsset::register($this);
 $webroot = Yii::getAlias(@$webroot);
 $absoluteUrl = \yii\helpers\Url::home(true);
 $auth = Yii::$app->authManager;
-$role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
+$role = ' - ' . implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -232,29 +232,31 @@ $role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)
 
                         <!--end Aprroval Management-->
 
-                        <!-- contracts -->
+                        <!-- Tenants -->
+                        <?php if (Yii::$app->user->can('compliance-admin')): ?>
+                            <li
+                                class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['contracts']) ? 'menu-open' : '' ?>">
+                                <a href="#" title="Tenants Management"
+                                    class="nav-link <?= Yii::$app->utility->currentCtrl('contracts') ? 'active' : '' ?>">
+                                    <i class="nav-icon fas fa-user-friends"></i>
+                                    <p>
+                                        Tenants
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= $absoluteUrl ?>tenants"
+                                            class="nav-link <?= Yii::$app->utility->currentaction('tenants', 'index') ? 'active' : '' ?>">
+                                            <i class="fa fa-user-friends nav-icon"></i>
+                                            <p>List</p>
+                                        </a>
+                                    </li>
 
-                        <li
-                            class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['contracts']) ? 'menu-open' : '' ?>">
-                            <a href="#" title="Tenants Management"
-                                class="nav-link <?= Yii::$app->utility->currentCtrl('contracts') ? 'active' : '' ?>">
-                                <i class="nav-icon fas fa-user-friends"></i>
-                                <p>
-                                    Tenants
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= $absoluteUrl ?>tenants"
-                                        class="nav-link <?= Yii::$app->utility->currentaction('tenants', 'index') ? 'active' : '' ?>">
-                                        <i class="fa fa-user-friends nav-icon"></i>
-                                        <p>List</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                        <!--end Tenants -->
 
 
 
@@ -301,11 +303,11 @@ $role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)
 
 
                         <!-- RBAC Management -->
-                        <?php if (Yii::$app->user->can('admin')): ?>
+                        <?php if (Yii::$app->user->can('compliance-admin')): ?>
                             <li
-                                class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['workflow-template']) ? 'menu-open' : '' ?>">
+                                class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['rbac']) ? 'menu-open' : '' ?>">
                                 <a href="#" title="Role Based Access Control Management"
-                                    class="nav-link <?= Yii::$app->utility->currentCtrl(['workflow-template']) ? 'active' : '' ?>">
+                                    class="nav-link <?= Yii::$app->utility->currentCtrl(['rbac']) ? 'active' : '' ?>">
                                     <i class="nav-icon fas fa-user-lock"></i>
                                     <p>
                                         RBAC Mgt.
@@ -316,7 +318,7 @@ $role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)
 
                                     <li class="nav-item">
                                         <a href="<?= $absoluteUrl ?>rbac/user-roles"
-                                            class="nav-link <?= Yii::$app->utility->currentaction('workflow-template', 'index') ? 'active' : '' ?>">
+                                            class="nav-link <?= Yii::$app->utility->currentaction('rbac', 'user-roles') ? 'active' : '' ?>">
                                             <i class="fa fa-user-tag nav-icon"></i>
                                             <p>User Role Assignment</p>
                                         </a>
@@ -324,14 +326,14 @@ $role = '';// implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)
 
                                     <li class="nav-item">
                                         <a href="<?= $absoluteUrl ?>rbac"
-                                            class="nav-link <?= Yii::$app->utility->currentaction('approval-status', 'index') ? 'active' : '' ?>">
+                                            class="nav-link <?= Yii::$app->utility->currentaction('rbac', 'index') ? 'active' : '' ?>">
                                             <i class="fa fa-users-cog nav-icon"></i>
                                             <p>Roles</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?= $absoluteUrl ?>rbac/permissions"
-                                            class="nav-link <?= Yii::$app->utility->currentaction('duration-units', 'index') ? 'active' : '' ?>">
+                                            class="nav-link <?= Yii::$app->utility->currentaction('rbac', 'permissions') ? 'active' : '' ?>">
                                             <i class="fa fa-key nav-icon"></i>
                                             <p>Permissions</p>
                                         </a>

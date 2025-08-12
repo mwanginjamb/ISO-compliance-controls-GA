@@ -1,6 +1,7 @@
 <?php
 namespace common\Library;
 use Yii;
+use app\models\User;
 use yii\base\Component;
 use app\models\Standards;
 
@@ -51,4 +52,45 @@ class Dashboard extends Component
         });
         return count($clauses);
     }
+
+    public function countActiveUsers()
+    {
+        $users = User::find()
+            ->where(['status' => User::STATUS_ACTIVE]) // Active
+            // ->andWhere(['not', ['staff_id_number' => null]])
+            ->asArray()->all();
+        if ($users) {
+            return count($users);
+        }
+        return 0;
+    }
+
+    // count inactive users
+
+    public function countInactiveUsers()
+    {
+        $users = User::find()
+            ->where(['status' => User::STATUS_INACTIVE]) // inactive
+            // ->andWhere(['not', ['status' => 9]])
+            ->asArray()->all();
+        if ($users) {
+            return count($users);
+        }
+        return 0;
+    }
+
+    // count active users and without staff_id_number
+
+    public function countRequireUpdate()
+    {
+        $users = User::find()
+            ->where(['status' => User::STATUS_ACTIVE]) // active
+            ->where(['status' => null]) // staff_id_number is null
+            ->asArray()->all();
+        if ($users) {
+            return count($users);
+        }
+        return 0;
+    }
+
 }

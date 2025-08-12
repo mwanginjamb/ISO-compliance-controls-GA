@@ -45,7 +45,7 @@ use yii\bootstrap5\Html;
                             <td data-name="Assignee" ondblclick="addDropDown(this,'assignees')"></td>
                             <td data-name="timeline" ondblclick="addInput(this,'date')"></td>
                             <td>
-                                <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
+                                <?= (Yii::$app->user->can('compliance-admin')) ? Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) : '' ?>
                             </td>
                         </tr>
                         <!-- /row template -->
@@ -73,11 +73,11 @@ use yii\bootstrap5\Html;
                                     <?= $r->timeline ?>
                                 </td>
                                 <td>
-                                    <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
+                                    <?= (Yii::$app->user->can('compliance-admin')) ? Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
                                     class' => 'btn btn-danger btn-sm delete',
                                         'data-service' => $endpoint,
                                         'data-key' => $r->id
-                                    ]) ?>
+                                    ]) : '' ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
