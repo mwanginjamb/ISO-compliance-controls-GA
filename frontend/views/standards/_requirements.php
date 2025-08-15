@@ -22,15 +22,16 @@ use yii\bootstrap5\Html;
                             <th class="text-capitalize text-bold text-info">Actions Required</th>
                             <th class="text-capitalize text-bold text-info">Assignment</th>
                             <th class="text-capitalize text-bold text-info">Timeline</th>
-                            <th class="text-bold"><?= Html::a('Add a Requirement', Url::home(true) . 'apiv1/requirements', [
-                                'class' => 'btn btn-sm btn-info add',
-                                'data-sub_clause_id' => $sc->id,
-                                'data-description' => 'requirement - ' . date('Y-m-d H:i:s'),
-                                'data-template' => 1,
-                                'data-status' => 0,
-                                'data-endpoint' => Url::home(true) . 'apiv1/requirements',
-                                // 'data-reload' => 1
-                            ]) ?>
+                            <th class="text-bold">
+                                <?= (Yii::$app->user->can('create-requirement')) ? Html::a('Add a Requirement', Url::home(true) . 'apiv1/requirements', [
+                                    'class' => 'btn btn-sm btn-info add',
+                                    'data-sub_clause_id' => $sc->id,
+                                    'data-description' => 'requirement - ' . date('Y-m-d H:i:s'),
+                                    'data-template' => 1,
+                                    'data-status' => 0,
+                                    'data-endpoint' => Url::home(true) . 'apiv1/requirements',
+                                    // 'data-reload' => 1
+                                ]) : '' ?>
                             </th>
                         </tr>
                     </thead>
@@ -45,7 +46,7 @@ use yii\bootstrap5\Html;
                             <td data-name="Assignee" ondblclick="addDropDown(this,'assignees')"></td>
                             <td data-name="timeline" ondblclick="addInput(this,'date')"></td>
                             <td>
-                                <?= (Yii::$app->user->can('compliance-admin')) ? Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) : '' ?>
+                                <?= Html::a('<i class="bi bi-trash"></i>', '#', ['class' => 'btn btn-danger btn-sm delete']) ?>
                             </td>
                         </tr>
                         <!-- /row template -->
@@ -73,7 +74,7 @@ use yii\bootstrap5\Html;
                                     <?= $r->timeline ?>
                                 </td>
                                 <td>
-                                    <?= (Yii::$app->user->can('compliance-admin')) ? Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
+                                    <?= (Yii::$app->user->can('delete-requirement')) ? Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
                                     class' => 'btn btn-danger btn-sm delete',
                                         'data-service' => $endpoint,
                                         'data-key' => $r->id

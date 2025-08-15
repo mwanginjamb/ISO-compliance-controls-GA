@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-title align-self-center">Clauses</div>
                 <div class="card-tools">
                     <div class="btn-group">
-                        <?= Html::a('Update standard', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                        <?=  (Yii::$app->user->can('compliance-admin'))? Html::a('Delete', ['delete', 'id' => $model->id], [
+                        <?= (Yii::$app->user->can('update-standard'))? Html::a('Update standard', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']):'' ?>
+                        <?=  (Yii::$app->user->can('delete-standard'))? Html::a('Delete', ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [
                                 'confirm' => 'Are you sure you want to delete this item?',
@@ -50,14 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th>Analyzable ?</th>
                             <th class="text-capitalize text-bold text-body text-center">
                                 <div class="float-right">
-                                    <?= Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
+                                    <?= (Yii::$app->user->can('create-clause'))? Html::a('Add a clause', Url::home(true) . 'apiv1/clauses', [
                                         'class' => 'btn btn-warning add',
                                         'data-standard_id' => $model->id,
                                         'data-title' => 'clause - ' . date('Y-m-d H:i:s'),
                                         'data-template' => 1,
                                         'data-endpoint' => Url::home(true) . 'apiv1/clauses',
                                         'data-reload' => 1
-                                    ]) ?>
+                                    ]): '' ?>
                                 </div>
                             </th>
                         </tr>
@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     Controls</td>
                                                 <td>Compliance Status</td>
                                                 <td class=" text-center text-bold">
-                                                    <?= Html::a('Add a Control', Url::home(true) . 'apiv1/sub-clauses', [
+                                                    <?= (Yii::$app->user->can('create-sub-clause'))? Html::a('Add a Control', Url::home(true) . 'apiv1/sub-clauses', [
                                                         'class' => 'btn btn-sm btn-primary add',
                                                         'title' => 'Add a Sub-Clause',
                                                         'data-number' => Yii::$app->security->generateRandomString(3),
@@ -117,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'data-clause_id' => $c->id,
                                                         'data-endpoint' => Url::home(true) . 'apiv1/sub-clauses',
                                                         'data-reload' => 1
-                                                    ]) ?>
+                                                    ]):'' ?>
                                                 </td>
                                             </tr>
                                         </thead>
@@ -152,11 +152,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <?= Html::a('<i class="bi bi-trash"></i>', $endpoint, [
+                                                        <?= (Yii::$app->user->can('delete-sub-clause'))? Html::a('<i class="bi bi-trash"></i>', $endpoint, [
                                                             'class' => 'btn btn-danger btn-sm delete',
                                                             'data-service' => $endpoint,
                                                             'data-key' => $sc->id
-                                                        ]) ?>
+                                                        ]):'' ?>
                                                     </td>
                                                 </tr>
 
