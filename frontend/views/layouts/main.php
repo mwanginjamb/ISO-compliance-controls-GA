@@ -233,7 +233,7 @@ $role = ' - ' . implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->i
                         <!--end Aprroval Management-->
 
                         <!-- Tenants -->
-                        <?php if (Yii::$app->user->can('compliance-admin')): ?>
+                        <?php if (Yii::$app->user->can('view-tenants')): ?>
                             <li
                                 class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['contracts']) ? 'menu-open' : '' ?>">
                                 <a href="#" title="Tenants Management"

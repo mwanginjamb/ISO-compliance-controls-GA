@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\apiv1\controllers;
 
 use app\models\Requirements;
