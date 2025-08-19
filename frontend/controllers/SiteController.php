@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\User;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use app\models\Standards;
 use yii\filters\VerbFilter;
@@ -18,6 +19,7 @@ use frontend\models\ResetPasswordForm;
 use yii\base\InvalidArgumentException;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
+use common\models\User as IdentityUser;
 
 /**
  * Site controller
@@ -40,12 +42,13 @@ class SiteController extends Controller
                     'update',
                     'delete',
                     'view',
+                    'generate-token'
                 ],
                 'rules' => [
                     [
                         'actions' => ['signup'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['?'], // Guest Access
                     ],
                     [
                         'actions' => [
@@ -55,9 +58,10 @@ class SiteController extends Controller
                             'update',
                             'delete',
                             'view',
+                            'generate-token'
                         ],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['@'], // Authenticated
                     ],
                 ],
             ],
@@ -284,9 +288,18 @@ class SiteController extends Controller
 
     public function actionUsers()
     {
-        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status'])->orderBy(['created_at' => SORT_DESC])->all();
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status', 'access_token'])->orderBy(['created_at' => SORT_DESC])->all();
         return $this->render('users', [
             'users' => $users
         ]);
+    }
+
+    public function actionGenerateToken()
+    {
+        $userID = Yii::$app->user->id;
+        $user = User::findOne($userID);
+        $user->generateAccessToken();
+        $user->save(false);
+        return $this->redirect(['users']);
     }
 }

@@ -36,7 +36,9 @@ $this->title = 'App Users';
                                 <td class="fw-bold">Email</td>
                                 <td class="fw-bold">Created At</td>
                                 <td class="fw-bold">Staff Number</td>
+                                <td class="fw-bold">Access Token</td>
                                 <td class="fw-bold">Status</td>
+                                <td class="fw-bold">Token Action</td>
                                 <td class="fw-bold">Action</td>
                             </tr>
                         </thead>
@@ -59,7 +61,17 @@ $this->title = 'App Users';
                                         <td><?= strtoupper($c->email) ?? '' ?></td>
                                         <td><?= Yii::$app->formatter->asDatetime($c->created_at) ?? '' ?></td>
                                         <td><?= $c->staff_id_number ?? '' ?></td>
+                                        <td><?= $c->access_token ?? '' ?></td>
                                         <td><?= $status ?></td>
+                                        <td><?= Html::a('<i class="fas fa-key mx-1"></i>Generate Token', ['generate-token'], [
+                                            'class' => 'btn btn-xs btn-warning',
+                                            'data' => [
+                                                'confirm' => 'Are you sure you want to generate an API token? .',
+                                                'method' => 'post',
+
+                                            ]
+                                        ]) ?>
+                                        </td>
                                         <td><?= Html::a('<i class="fas fa-trash mx-1"></i>Delete', ['site/delete'], [
                                             'class' => 'btn btn-xs btn-danger',
                                             'data' => [

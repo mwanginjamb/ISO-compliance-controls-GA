@@ -18,6 +18,7 @@ use Yii;
  * @property int $updated_at
  * @property string|null $verification_token
  * @property int|null $tenant_id
+ * @property string|null $access_token
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -49,6 +50,7 @@ class User extends \yii\db\ActiveRecord
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            ['access_token', 'safe'],
         ];
     }
 
@@ -79,6 +81,12 @@ class User extends \yii\db\ActiveRecord
     public static function find()
     {
         return new UserQuery(get_called_class());
+    }
+
+    // Generate Access token
+    public function generateAccessToken()
+    {
+        $this->access_token = Yii::$app->security->generateRandomString(128);
     }
 
 }

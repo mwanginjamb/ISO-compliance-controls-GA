@@ -9,6 +9,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\filters\RateLimitInterface;
 use yii\web\IdentityInterface;
 
 /**
@@ -26,8 +27,11 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  * @property integer $tenant_id
+ * @property integer $allowance
+ * @property integer $allowance_updated_at
+ * @property integer $access_token
  */
-class User extends MultiTenantRecord implements IdentityInterface, TenantInterface
+class User extends MultiTenantRecord implements IdentityInterface, TenantInterface, RateLimitInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
@@ -50,6 +54,9 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
     }
 
 
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -70,8 +77,35 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['tenant_id', 'integer'], // Ensure tenant_id is an integer
             ['tenant_id', 'exist', 'skipOnError' => true, 'targetClass' => Tenants::class, 'targetAttribute' => ['tenant_id' => 'id']], // Ensure the tenant exists in your tenants table (if you have one)
+            ['allowance', 'integer'],
+            ['allowance_updated_at', 'integer'],
+
         ];
     }
+
+    // Implement RateLimitInterface Methods
+
+    // Number of requests allowed per time window
+    public function getRateLimit($request, $action)
+    {
+        return [5, 300]; // 3 api calls per 60 minutes
+    }
+
+    // How many requests are left in the current window
+    public function loadAllowance($request, $action)
+    {
+        return [$this->allowance, $this->allowance_updated_at];
+    }
+
+    // Store Updated Allowance
+
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        $this->allowance = $allowance;
+        $this->allowance_updated_at = $timestamp;
+        $this->save(false);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -86,7 +120,7 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -201,6 +235,8 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+
+
 
     /**
      * Generates new password reset token
