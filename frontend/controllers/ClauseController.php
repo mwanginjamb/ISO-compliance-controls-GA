@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use app\models\Clause;
 use app\models\ClauseSearch;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,8 +23,33 @@ class ClauseController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'permissions' => ['create-clause'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'permissions' => ['update-clause'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'permissions' => ['delete-clause'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],

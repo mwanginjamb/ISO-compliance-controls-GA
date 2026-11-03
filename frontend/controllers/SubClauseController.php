@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use app\models\SubClause;
 use app\models\SubClauseSearch;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,8 +23,33 @@ class SubClauseController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'permissions' => ['create-sub-clause'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'permissions' => ['update-sub-clause'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'permissions' => ['delete-sub-clause'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],

@@ -1,4 +1,7 @@
-<?php $form = yii\widgets\ActiveForm::begin() ?>
+<?php
+use yii\helpers\Html;
+
+$form = yii\widgets\ActiveForm::begin() ?>
 
 <?= $form->field($model, 'role_name')->textInput() ?>
 
@@ -15,9 +18,9 @@
                     'id' => 'perm-' . $item->name
                 ]
             ) ?>
-            <label class="form-check-label" for="perm-<?= $item->name ?>">
-                <?= $item->name ?>
-                <span class="text-muted">(<?= $item->description ?>)</span>
+            <label class="form-check-label" for="perm-<?= Html::encode($item->name) ?>">
+                <?= Html::encode($item->name) ?>
+                <span class="text-muted">(<?= Html::encode($item->description) ?>)</span>
             </label>
         </div>
     <?php endforeach; ?>

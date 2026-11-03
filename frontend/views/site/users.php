@@ -12,7 +12,15 @@ $this->title = 'App Users';
         <div class="card card-info">
             <div class="card-header">
                 <h4 class="card-title"><?= Html::encode($this->title) ?></h4>
-                <div class="card-tools"></div>
+                <div class="card-tools">
+                    <?= Html::a('<i class="fas fa-key mx-1"></i>Generate my API token', ['generate-token'], [
+                        'class' => 'btn btn-sm btn-warning',
+                        'data' => [
+                            'confirm' => 'Generate a new API token? Your current token, if any, will stop working.',
+                            'method' => 'post',
+                        ]
+                    ]) ?>
+                </div>
             </div>
             <div class="card-body">
 
@@ -36,10 +44,8 @@ $this->title = 'App Users';
                                 <td class="fw-bold">Email</td>
                                 <td class="fw-bold">Created At</td>
                                 <td class="fw-bold">Staff Number</td>
-                                <td class="fw-bold">Access Token</td>
+                                <td class="fw-bold">API Token</td>
                                 <td class="fw-bold">Status</td>
-                                <td class="fw-bold">Token Action</td>
-                                <td class="fw-bold">Action</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,33 +62,19 @@ $this->title = 'App Users';
                                     }
                                     ?>
                                     <tr>
-                                        <td><?= strtoupper($c->id) ?? '' ?></td>
-                                        <td><?= $c->username ?? '' ?></td>
-                                        <td><?= strtoupper($c->email) ?? '' ?></td>
-                                        <td><?= Yii::$app->formatter->asDatetime($c->created_at) ?? '' ?></td>
-                                        <td><?= $c->staff_id_number ?? '' ?></td>
-                                        <td><?= $c->access_token ?? '' ?></td>
+                                        <td><?= Html::encode($c->id) ?></td>
+                                        <td><?= Html::encode($c->username) ?></td>
+                                        <td><?= Html::encode(strtoupper($c->email)) ?></td>
+                                        <td><?= Yii::$app->formatter->asDatetime($c->created_at) ?></td>
+                                        <td><?= Html::encode($c->staff_id_number ?? '') ?></td>
+                                        <td>
+                                            <?php if ($c->access_token_expires_at > time()): ?>
+                                                Valid until <?= Yii::$app->formatter->asDate($c->access_token_expires_at) ?>
+                                            <?php else: ?>
+                                                <span class="text-muted">None</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= $status ?></td>
-                                        <td><?= Html::a('<i class="fas fa-key mx-1"></i>Generate Token', ['generate-token'], [
-                                            'class' => 'btn btn-xs btn-warning',
-                                            'data' => [
-                                                'confirm' => 'Are you sure you want to generate an API token? .',
-                                                'method' => 'post',
-
-                                            ]
-                                        ]) ?>
-                                        </td>
-                                        <td><?= Html::a('<i class="fas fa-trash mx-1"></i>Delete', ['site/delete'], [
-                                            'class' => 'btn btn-xs btn-danger',
-                                            'data' => [
-                                                'confirm' => 'Are you sure you want to delete this user?  Note this is a destructive action.',
-                                                'method' => 'post',
-                                                'params' => [
-                                                    'id' => $c->id
-                                                ]
-                                            ]
-                                        ]) ?>
-                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

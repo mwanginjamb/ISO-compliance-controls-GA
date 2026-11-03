@@ -3,11 +3,10 @@
 namespace app\modules\apiv1\controllers;
 
 use app\models\Clause;
-use yii\rest\ActiveController;
 
-class ClauseController extends ActiveController
+class ClauseController extends BaseApiController
 {
     public $modelClass = Clause::class;
 
-
+    public $permissionEntity = 'clause';
 }

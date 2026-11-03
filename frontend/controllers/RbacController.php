@@ -5,10 +5,12 @@ use app\models\UserRoleForm;
 use Yii;
 use app\models\User;
 use yii\web\Controller;
+use yii\filters\VerbFilter;
 use frontend\models\RoleForm;
 use app\models\PermissionForm;
 use yii\filters\AccessControl;
 use yii\data\ArrayDataProvider;
+use yii\web\NotFoundHttpException;
 
 class RbacController extends Controller
 {
@@ -20,8 +22,15 @@ class RbacController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'], // Only admins can access
+                        'permissions' => ['manage-rbac'],
                     ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete-role' => ['POST'],
+                    'delete-permission' => ['POST'],
                 ],
             ],
         ];
@@ -74,7 +83,9 @@ class RbacController extends Controller
     public function actionUpdateRole($name)
     {
         $auth = Yii::$app->authManager;
-        $role = $auth->getRole($name);
+        if (($role = $auth->getRole($name)) === null) {
+            throw new NotFoundHttpException('Role not found.');
+        }
 
         $model = new RoleForm(['scenario' => 'update']);
         $model->role_name = $role->name;
@@ -195,7 +206,9 @@ class RbacController extends Controller
     public function actionAssignRole($userId)
     {
         $auth = Yii::$app->authManager;
-        $user = User::findOne($userId); // Assuming User model exists
+        if (($user = User::findOne($userId)) === null) {
+            throw new NotFoundHttpException('User not found.');
+        }
         $model = new UserRoleForm();
         $model->userId = $userId;
 
@@ -315,7 +328,9 @@ class RbacController extends Controller
     public function actionUpdatePermission($name)
     {
         $auth = Yii::$app->authManager;
-        $permission = $auth->getPermission($name);
+        if (($permission = $auth->getPermission($name)) === null) {
+            throw new NotFoundHttpException('Permission not found.');
+        }
         $existingPermissions = $auth->getPermissions();
 
         $model = new PermissionForm(['scenario' => 'update']);
@@ -417,7 +432,9 @@ class RbacController extends Controller
     public function actionManageHierarchy($name)
     {
         $auth = Yii::$app->authManager;
-        $item = $auth->getRole($name) ?? $auth->getPermission($name);
+        if (($item = $auth->getRole($name) ?? $auth->getPermission($name)) === null) {
+            throw new NotFoundHttpException('Role or permission not found.');
+        }
         $request = Yii::$app->request;
 
         if ($request->isPost) {

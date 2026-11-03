@@ -50,7 +50,7 @@ $role = ' - ' . implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->i
     <!-- / PWA SHIT -->
 
     <?php $this->registerCsrfMetaTags() ?>
-    <title><?= $this->title . ' | ' . Html::encode(Yii::$app->name) ?></title>
+    <title><?= Html::encode($this->title . ' | ' . Yii::$app->name) ?></title>
 
     <?php $this->head() ?>
     <style>
@@ -303,7 +303,7 @@ $role = ' - ' . implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->i
 
 
                         <!-- RBAC Management -->
-                        <?php if (Yii::$app->user->can('compliance-admin')): ?>
+                        <?php if (Yii::$app->user->can('manage-rbac')): ?>
                             <li
                                 class="nav-item has-treeview  <?= Yii::$app->utility->currentCtrl(['rbac']) ? 'menu-open' : '' ?>">
                                 <a href="#" title="Role Based Access Control Management"

@@ -61,7 +61,7 @@ class Alert extends \yii\bootstrap5\Widget
 
             foreach ((array) $flash as $i => $message) {
                 echo \yii\bootstrap5\Alert::widget([
-                    'body' => $message,
+                    'body' => \yii\helpers\Html::encode($message),
                     'closeButton' => $this->closeButton,
                     'options' => array_merge($this->options, [
                         'id' => $this->getId() . '-' . $type . '-' . $i,

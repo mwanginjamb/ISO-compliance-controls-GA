@@ -14,6 +14,8 @@ use yii\bootstrap5\ActiveForm;
 
     <?= $form->field($model, 'standard')->textInput(['maxlength' => 250]) ?>
 
+    <?= $form->field($model, 'period')->textInput(['maxlength' => 50, 'placeholder' => 'e.g. 2026/2027']) ?>
+
     <?php $form->field($model, 'created_at')->textInput() ?>
 
     <?php $form->field($model, 'updated_at')->textInput() ?>

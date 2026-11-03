@@ -14,7 +14,7 @@ $this->title = Yii::$app->name . ' - ' . 'Standards for Gap Analysis';
             <div class="card card-info">
                 <div class="card-header">
                     <div class="card-title align-self-center">
-                        <h2 class=""><?= $this->title ?></h2>
+                        <h2 class=""><?= Html::encode($this->title) ?></h2>
                     </div>
                 </div>
                 <div class="card-body">
@@ -35,7 +35,7 @@ $this->title = Yii::$app->name . ' - ' . 'Standards for Gap Analysis';
                                     ?>
                                     <tr>
                                         <td data-name="count"><?= $count ?></td>
-                                        <td data-name="standard"><?= $c->standard ?></td>
+                                        <td data-name="standard"><?= Html::encode($c->standard) ?><?= $c->period ? ' <span class="badge bg-secondary">' . Html::encode($c->period) . '</span>' : '' ?></td>
                                         <td>
                                             <?= Html::a('<i class="bi bi-eye mx-sm-1"></i> View Clauses', Url::toRoute(['standards/view', 'id' => $c->id]), [
                                                 'class' => 'btn btn-sm btn-primary',

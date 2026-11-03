@@ -15,8 +15,12 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int $tenant_id
+ * @property string|null $period assessment period, e.g. "2026/2027"
+ * @property int|null $cloned_from_id
  *
  * @property Clause[] $clauses
+ * @property Standards|null $clonedFrom
  */
 class Standards extends \yii\db\ActiveRecord
 {
@@ -44,10 +48,13 @@ class Standards extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['standard', 'period'], 'filter', 'filter' => 'strip_tags', 'skipOnEmpty' => true],
+            [['standard', 'period'], 'trim'],
             [['standard'], 'required'],
-            [['standard', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['standard', 'period', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['standard'], 'string', 'max' => 250],
+            [['period'], 'string', 'max' => 50],
             [['standard'], 'unique'],
         ];
     }
@@ -60,6 +67,8 @@ class Standards extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'standard' => Yii::t('app', 'Standard'),
+            'period' => Yii::t('app', 'Assessment Period'),
+            'cloned_from_id' => Yii::t('app', 'Cloned From'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'created_by' => Yii::t('app', 'Created By'),
@@ -75,6 +84,16 @@ class Standards extends \yii\db\ActiveRecord
     public function getClauses()
     {
         return $this->hasMany(Clause::class, ['standard_id' => 'id']);
+    }
+
+    /**
+     * Gets query for the standard this gap analysis was cloned from.
+     *
+     * @return \yii\db\ActiveQuery|StandardsQuery
+     */
+    public function getClonedFrom()
+    {
+        return $this->hasOne(Standards::class, ['id' => 'cloned_from_id']);
     }
 
     /**

@@ -34,34 +34,35 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => [
-                    'logout',
-                    'signup',
-                    'index',
-                    'create',
-                    'update',
-                    'delete',
-                    'view',
-                    'generate-token'
-                ],
                 'rules' => [
+                    [
+                        'actions' => [
+                            'error',
+                            'captcha',
+                            'about',
+                            'contact',
+                            'login',
+                            'request-password-reset',
+                            'reset-password',
+                            'verify-email',
+                            'resend-verification-email'
+                        ],
+                        'allow' => true, // everyone
+                    ],
                     [
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'], // Guest Access
                     ],
                     [
-                        'actions' => [
-                            'logout',
-                            'index',
-                            'create',
-                            'update',
-                            'delete',
-                            'view',
-                            'generate-token'
-                        ],
+                        'actions' => ['logout', 'index', 'generate-token'],
                         'allow' => true,
                         'roles' => ['@'], // Authenticated
+                    ],
+                    [
+                        'actions' => ['users'],
+                        'allow' => true,
+                        'permissions' => ['manage-users'],
                     ],
                 ],
             ],
@@ -69,6 +70,7 @@ class SiteController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
+                    'generate-token' => ['post'],
                 ],
             ],
         ];
@@ -288,18 +290,27 @@ class SiteController extends Controller
 
     public function actionUsers()
     {
-        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status', 'access_token'])->orderBy(['created_at' => SORT_DESC])->all();
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status', 'access_token_expires_at'])->orderBy(['created_at' => SORT_DESC])->all();
         return $this->render('users', [
             'users' => $users
         ]);
     }
 
+    /**
+     * Issues a new API token for the current user. The token is shown once
+     * and only its hash is stored.
+     */
     public function actionGenerateToken()
     {
-        $userID = Yii::$app->user->id;
-        $user = User::findOne($userID);
-        $user->generateAccessToken();
-        $user->save(false);
-        return $this->redirect(['users']);
+        /** @var IdentityUser $user */
+        $user = Yii::$app->user->identity;
+        $token = $user->generateAccessToken();
+        $user->save(false, ['access_token', 'access_token_expires_at']);
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Your new API token (copy it now, it will not be shown again): ' . $token
+        );
+        return $this->redirect(Yii::$app->user->can('manage-users') ? ['users'] : ['index']);
     }
 }

@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use app\models\Requirements;
 use app\models\RequirementsSearch;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,8 +23,33 @@ class RequirementsController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'permissions' => ['create-requirement'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'permissions' => ['update-requirement'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'permissions' => ['delete-requirement'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],

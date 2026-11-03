@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Standards $model */
 
-$this->title = 'Gap Analysis for ' . $model->standard;
+$this->title = 'Gap Analysis for ' . $model->standard . ($model->period ? ' (' . $model->period . ')' : '');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Standards'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -15,6 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="standards-view">
 
     <h1 class="lead text-center"><?= Html::encode($this->title) ?></h1>
+    <?php if ($model->clonedFrom): ?>
+        <p class="text-center text-muted small">
+            Cloned from <?= Html::a(Html::encode($model->clonedFrom->standard), ['view', 'id' => $model->cloned_from_id]) ?>
+        </p>
+    <?php endif; ?>
 
 
 
@@ -25,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="card-title align-self-center">Clauses</div>
                 <div class="card-tools">
                     <div class="btn-group">
+                        <?= (Yii::$app->user->can('clone-standard'))? Html::a('Clone for new period', ['clone', 'id' => $model->id], ['class' => 'btn btn-secondary']):'' ?>
                         <?= (Yii::$app->user->can('update-standard'))? Html::a('Update standard', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']):'' ?>
                         <?=  (Yii::$app->user->can('delete-standard'))? Html::a('Delete', ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
@@ -76,6 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!-- /row template -->
                         <?php
                         $count = 0;
+                        $decimals = Yii::$app->params['decimalPlaces'];
                         foreach ($model->clauses as $c):
                             $endpoint = Url::home(true) . 'apiv1/clauses/' . $c->id;
                             $count++;
@@ -84,12 +91,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <td><?= $count ?></td>
                                 <td data-key="<?= $c->id ?>" data-name="title" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this)">
-                                    <?= $c->title ?>
+                                    <?= Html::encode($c->title) ?>
                                 </td>
                                 <td>
-                                    <div class="badge rounded-pill <?= $c->badge ?>">
-                                        <?= Yii::$app->formatter->asDecimal($c->getSubClausesAverageStatus(), 1) . ' - ' . $c->verdict ?>
-                                    </div>
+                                    <?php if ($c->analyzable): ?>
+                                        <div class="badge rounded-pill <?= $c->badge ?>">
+                                            <?= Yii::$app->formatter->asDecimal($c->getSubClausesAverageStatus(), $decimals) . ' - ' . $c->verdict ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="badge rounded-pill bg-secondary" title="Not analyzable: excluded from the gap analysis">N/A</div>
+                                    <?php endif; ?>
                                 </td>
                                 <td colspan="2" data-key="<?= $c->id ?>" data-name="analyzable" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this,'checkbox', event)" data-reload="1">
@@ -141,15 +152,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 $endpoint = Url::home(true) . 'apiv1/sub-clauses/' . $sc->id;
                                                 ?>
                                                 <tr class="parent">
-                                                    <td><?= $sc->number ?></td>
+                                                    <td><?= Html::encode($sc->number) ?></td>
                                                     <td data-key="<?= $sc->id ?>" data-name="sub_clause"
                                                         data-service="<?= $endpoint ?>" ondblclick="addTextarea(this)">
-                                                        <?= $sc->sub_clause ?>
+                                                        <?= $sc->sub_clause /* purified on save */ ?>
                                                     </td>
                                                     <td>
-                                                        <div class="badge rounded-pill <?= $sc->badge ?>">
-                                                            <?= $sc->averageStatus . ' - ' . $sc->verdict ?>
-                                                        </div>
+                                                        <?php if ($c->analyzable): ?>
+                                                            <div class="badge rounded-pill <?= $sc->badge ?>">
+                                                                <?= Yii::$app->formatter->asDecimal($sc->averageStatus, $decimals) . ' - ' . $sc->verdict ?>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <div class="badge rounded-pill bg-secondary">N/A</div>
+                                                        <?php endif; ?>
                                                     </td>
                                                     <td>
                                                         <?= (Yii::$app->user->can('delete-sub-clause'))? Html::a('<i class="bi bi-trash"></i>', $endpoint, [

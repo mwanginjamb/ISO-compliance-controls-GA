@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+
 $this->title = 'User Roles Assignment';
 $auth = Yii::$app->authManager;
 ?>
@@ -19,7 +21,7 @@ $auth = Yii::$app->authManager;
             <tbody>
                 <?php foreach ($users as $user): ?>
                     <tr>
-                        <td><?= $user->username ?></td>
+                        <td><?= Html::encode($user->username) ?></td>
                         <td><?= yii\helpers\Html::a(
                             'Assign Roles',
                             ['assign-role', 'userId' => $user->id],

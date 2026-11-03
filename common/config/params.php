@@ -6,6 +6,7 @@ return [
     'senderName' => 'Compliance Mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
+    'user.accessTokenExpire' => 3600 * 24 * 90,
     'app.statusThresholds' => [
         'Not Implemented' => ['min' => 0, 'max' => 0.4999999], // Or 'threshold' => 0.5
         'Partially Implemented' => ['min' => 0.5, 'max' => 1.4999999],

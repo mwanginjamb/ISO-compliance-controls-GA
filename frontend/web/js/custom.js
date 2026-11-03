@@ -15,9 +15,21 @@ const Toast = Swal.mixin({
     timer: 5000
 });
 
+// Headers for same-origin requests authenticated by the session: the server rejects unsafe requests without the CSRF token
+function csrfHeaders(headers = {}) {
+    return new Headers({ ...headers, 'X-CSRF-Token': yii.getCsrfToken() });
+}
+
+// Extract a readable message from a failed jQuery request (Yii returns {message} for HTTP errors)
+function xhrErrorMessage(xhr) {
+    return (xhr.responseJSON && xhr.responseJSON.message) || `Request failed (${xhr.status} ${xhr.statusText})`;
+}
+
 function closeInput(elm) {
     var td = elm.parentNode;
     var value;
+    // For drop downs, show the selected option's label rather than its code
+    var label = (elm.tagName === 'SELECT' && elm.selectedIndex > 0) ? elm.options[elm.selectedIndex].text : null;
 
     // Work to destroy TinyMCE editor instance
     // Check if element (elm) is a TinyMCE editor instance
@@ -46,6 +58,8 @@ function closeInput(elm) {
     // Update the tds innerHTML with the new (potentially rich) content
     if (child.type == 'checkbox') {
         td.innerHTML = (value === +1) ? 'Yes' : 'No';
+    } else if (label !== null) {
+        td.textContent = label;
     } else {
         td.innerHTML = value;
     }
@@ -131,7 +145,7 @@ function closeInput(elm) {
             console.log(msg);
             Toast.fire({
                 type: 'success',
-                title: msg[data.name] + ' Saved Successfully.'
+                title: 'Change saved successfully.'
             })
         }
 
@@ -143,6 +157,11 @@ function closeInput(elm) {
 
         }
 
+    }).fail(function (xhr) {
+        Toast.fire({
+            type: 'error',
+            title: xhrErrorMessage(xhr)
+        });
     });
 }
 
@@ -267,10 +286,8 @@ async function getData(resource, filters) {
     payload = JSON.stringify({ ...filters });
     const res = await fetch(`./${resource}`, {
         method: 'POST',
-        headers: new Headers({
-            Origin: 'http://localhost:2026/',
+        headers: csrfHeaders({
             "Content-Type": 'application/json',
-            //'Content-Type': 'application/x-www-form-urlencoded'
         }),
         body: payload
     });
@@ -816,8 +833,7 @@ $(document).on('click', '.delete', function (e) {
 
         const res = fetch(url, {
             method: 'DELETE',
-            headers: new Headers({
-                Origin: 'http://localhost:8080/',
+            headers: csrfHeaders({
                 "Content-Type": 'application/json',
             }),
             body: JSON.stringify({ ...payload })
@@ -833,14 +849,11 @@ $(document).on('click', '.delete', function (e) {
                 if (response.ok) {
                     return response.json(); // Parse JSON if content is expected
                 }
-                // For error responses (e.g., 4xx, 5xx)
-                return response.json().then(errorData => {
-                    // Parse error message from body if available, then reject
-                    return Promise.reject(errorData);
-                }).catch(() => {
-                    // Fallback if error body is not JSON or not present
-                    return Promise.reject({ note: `Server error: ${response.status} ${response.statusText}` });
-                });
+                // For error responses (e.g., 4xx, 5xx) resolve to a failure result with the server's message, if any
+                const fallback = `Server error: ${response.status} ${response.statusText}`;
+                return response.json()
+                    .then(errorData => ({ result: false, note: errorData.message || fallback }))
+                    .catch(() => ({ result: false, note: fallback }));
             })
             .then(result => {
                 console.log(result);
@@ -891,8 +904,7 @@ $('.add').on('click', function (e) {
     $(this).attr('disabled', true);
     const res = fetch(url, {
         method: 'POST',
-        headers: new Headers({
-            Origin: 'http://localhost:8080/',
+        headers: csrfHeaders({
             "Content-Type": 'application/json'
         }),
         body: JSON.stringify({ ...payload })
@@ -929,9 +941,10 @@ $('.add').on('click', function (e) {
                 }
 
             } else {
+                // Yii returns {message} for HTTP errors and [{field, message}] for validation errors
                 Toast.fire({
                     type: 'error',
-                    title: result.note
+                    title: result.note || result.message || (Array.isArray(result) && result[0]?.message) || 'Failed to insert record.'
                 });
 
                 setTimeout(() => {

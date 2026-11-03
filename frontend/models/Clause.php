@@ -51,7 +51,8 @@ class Clause extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'standard_id'], 'required'],
-            ['title', 'unique'],
+            ['title', 'filter', 'filter' => 'strip_tags', 'skipOnEmpty' => true],
+            ['title', 'unique', 'targetAttribute' => ['title', 'standard_id']],
             [['title', 'description', 'created_at', 'updated_at', 'created_by', 'updated_by', 'standard_id'], 'default', 'value' => null],
             [['description'], 'string'],
             [['created_at', 'updated_at', 'created_by', 'updated_by', 'standard_id'], 'integer'],

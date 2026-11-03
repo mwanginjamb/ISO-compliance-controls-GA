@@ -56,9 +56,9 @@ use yii\bootstrap5\Html;
 
                             <tr>
                                 <td data-key="<?= $r->id ?>" data-name="description" data-service="<?= $endpoint ?>"
-                                    ondblclick="addTextarea(this)"><?= $r->description ?></td>
+                                    ondblclick="addTextarea(this)"><?= $r->description /* rich-text fields are purified on save */ ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="status" data-service="<?= $endpoint ?>"
-                                    ondblclick="addDropDown(this,'status')"><?= $r->status ?></td>
+                                    ondblclick="addDropDown(this,'status')"><?= Html::encode($r->statusLabel) ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="evidence_path" data-service="<?= $endpoint ?>"
                                     ondblclick="addTextarea(this)"><?= $r->evidence_path ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="gaps" data-service="<?= $endpoint ?>"
@@ -67,15 +67,15 @@ use yii\bootstrap5\Html;
                                     ondblclick="addTextarea(this)"><?= $r->actions_required ?></td>
                                 <td data-key="<?= $r->id ?>" data-name="assignee" data-service="<?= $endpoint ?>"
                                     ondblclick="addDropDown(this,'assignees')">
-                                    <?= $r->assignee ?>
+                                    <?= Html::encode($r->assignee) ?>
                                 </td>
                                 <td data-key="<?= $r->id ?>" data-name="timeline" data-service="<?= $endpoint ?>"
                                     ondblclick="addInput(this,'date')">
-                                    <?= $r->timeline ?>
+                                    <?= Html::encode($r->timeline) ?>
                                 </td>
                                 <td>
-                                    <?= (Yii::$app->user->can('delete-requirement')) ? Html::a('<i class="bi bi-trash"></i>', $endpoint, ['
-                                    class' => 'btn btn-danger btn-sm delete',
+                                    <?= (Yii::$app->user->can('delete-requirement')) ? Html::a('<i class="bi bi-trash"></i>', $endpoint, [
+                                        'class' => 'btn btn-danger btn-sm delete',
                                         'data-service' => $endpoint,
                                         'data-key' => $r->id
                                     ]) : '' ?>

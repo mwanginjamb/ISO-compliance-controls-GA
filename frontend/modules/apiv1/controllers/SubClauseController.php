@@ -3,11 +3,10 @@
 namespace app\modules\apiv1\controllers;
 
 use app\models\SubClause;
-use yii\rest\ActiveController;
 
-class SubClauseController extends ActiveController
+class SubClauseController extends BaseApiController
 {
     public $modelClass = SubClause::class;
 
-
+    public $permissionEntity = 'sub-clause';
 }

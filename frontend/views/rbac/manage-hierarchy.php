@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
                                             'class' => 'form-check-input'
                                         ]
                                     ) ?>
-                                    <label class="form-check-label" for="child_<?= $child->name ?>">
+                                    <label class="form-check-label" for="child_<?= Html::encode($child->name) ?>">
                                         <i class="fas fa-users-cog text-primary"></i>
                                         <?= Html::encode($child->name) ?>
                                         <?php if ($child->description): ?>
@@ -67,7 +67,7 @@ use yii\widgets\ActiveForm;
                                             'class' => 'form-check-input'
                                         ]
                                     ) ?>
-                                    <label class="form-check-label" for="child_<?= $child->name ?>">
+                                    <label class="form-check-label" for="child_<?= Html::encode($child->name) ?>">
                                         <i class="fas fa-key text-success"></i>
                                         <?= Html::encode($child->name) ?>
                                         <?php if ($child->description): ?>

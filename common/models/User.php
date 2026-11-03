@@ -29,7 +29,8 @@ use yii\web\IdentityInterface;
  * @property integer $tenant_id
  * @property integer $allowance
  * @property integer $allowance_updated_at
- * @property integer $access_token
+ * @property string|null $access_token SHA-256 hash of the API access token
+ * @property integer|null $access_token_expires_at
  */
 class User extends MultiTenantRecord implements IdentityInterface, TenantInterface, RateLimitInterface
 {
@@ -88,7 +89,7 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
     // Number of requests allowed per time window
     public function getRateLimit($request, $action)
     {
-        return [5, 300]; // 3 api calls per 60 minutes
+        return [120, 60]; // 120 api calls per 60 seconds
     }
 
     // How many requests are left in the current window
@@ -120,7 +121,33 @@ class User extends MultiTenantRecord implements IdentityInterface, TenantInterfa
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token, 'status' => self::STATUS_ACTIVE]);
+        if (!is_string($token) || $token === '') {
+            return null;
+        }
+
+        return static::find()
+            ->where(['access_token' => static::hashAccessToken($token), 'status' => self::STATUS_ACTIVE])
+            ->andWhere(['>', 'access_token_expires_at', time()])
+            ->one();
+    }
+
+    /**
+     * Issues a new API access token, replacing any previous one.
+     * Only the hash is stored; the plain token is returned to be shown once.
+     *
+     * @return string the plain-text token
+     */
+    public function generateAccessToken()
+    {
+        $token = Yii::$app->security->generateRandomString(64);
+        $this->access_token = static::hashAccessToken($token);
+        $this->access_token_expires_at = time() + Yii::$app->params['user.accessTokenExpire'];
+        return $token;
+    }
+
+    public static function hashAccessToken($token)
+    {
+        return hash('sha256', $token);
     }
 
     /**

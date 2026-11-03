@@ -3,20 +3,42 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\web\Response;
 use yii\web\Controller;
+use app\models\Clause;
+use app\models\SubClause;
 use app\models\Standards;
+use app\models\Requirements;
 use yii\httpclient\Client;
 use yii\filters\VerbFilter;
 use app\models\StandardsSearch;
+use yii\filters\AccessControl;
 use yii\httpclient\CurlTransport;
 use yii\filters\ContentNegotiator;
+use frontend\models\CloneStandardForm;
 use yii\web\NotFoundHttpException;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * StandardsController implements the CRUD actions for Standards model.
  */
 class StandardsController extends Controller
 {
+    /**
+     * Resources that can be edited inline through actionCommit():
+     * REST resource name => [model class, RBAC permission entity, editable fields]
+     */
+    const INLINE_EDITABLE = [
+        'clauses' => [Clause::class, 'clause', ['title', 'analyzable']],
+        'sub-clauses' => [SubClause::class, 'sub-clause', ['sub_clause']],
+        'requirements' => [
+            Requirements::class,
+            'requirement',
+            ['description', 'status', 'evidence_path', 'gaps', 'actions_required', 'assignee', 'timeline'],
+        ],
+    ];
+
     /**
      * @inheritDoc
      */
@@ -25,40 +47,53 @@ class StandardsController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view', 'visualization', 'analysis', 'status', 'assignees', 'commit', 'test'],
+                            'allow' => true,
+                            'roles' => ['@'], // commit checks per-resource permissions itself
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'permissions' => ['create-standard'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'permissions' => ['update-standard'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'permissions' => ['delete-standard'],
+                        ],
+                        [
+                            'actions' => ['clone'],
+                            'allow' => true,
+                            'permissions' => ['clone-standard'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
-                        // 'view' => ['POST'],
+                        'commit' => ['POST'],
                     ],
                 ],
                 'contentNegotiator' => [
-                    'class' => ContentNegotiator::className(),
+                    'class' => ContentNegotiator::class,
                     'only' => ['commit', 'status', 'analysis', 'assignees'],
                     'formatParam' => '_format',
                     'formats' => [
-                        'application/json' => \yii\web\Response::FORMAT_JSON
+                        'application/json' => Response::FORMAT_JSON
                     ]
                 ],
             ]
         );
-    }
-
-    public function beforeAction($action)
-    {
-
-        $ExceptedActions = [
-            'commit',
-            'status',
-            'analysis',
-            'assignees'
-        ];
-
-        if (in_array($action->id, $ExceptedActions)) {
-            $this->enableCsrfValidation = false;
-        }
-
-        return parent::beforeAction($action);
     }
 
     /**
@@ -160,6 +195,29 @@ class StandardsController extends Controller
     }
 
     /**
+     * Clones a standard's clauses, controls and requirements into a new
+     * gap analysis for another assessment period.
+     * @param int $id ID of the standard to clone
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionClone($id)
+    {
+        $source = $this->findModel($id);
+        $model = new CloneStandardForm($source);
+
+        if ($model->load($this->request->post()) && ($clone = $model->cloneStandard()) !== null) {
+            Yii::$app->session->setFlash('success', 'Gap analysis cloned for ' . ($clone->period ?: $clone->standard) . '.');
+            return $this->redirect(['view', 'id' => $clone->id]);
+        }
+
+        return $this->render('clone', [
+            'model' => $model,
+            'source' => $source,
+        ]);
+    }
+
+    /**
      * Finds the Standards model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
@@ -175,49 +233,42 @@ class StandardsController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
+    /**
+     * Saves a single inline-edited field.
+     *
+     * The client posts the record's REST URL as `service`; only the resource
+     * name and id are taken from it, and the record is updated locally.
+     * Returns the saved record, or an error message string for the UI to toast.
+     */
     public function actionCommit()
     {
-        try {
-            $endpoint = Yii::$app->request->post('service');
-            $field = Yii::$app->request->post('name');
-            $value = Yii::$app->request->post('value');
-            $id = Yii::$app->request->post('key');
+        $request = Yii::$app->request;
+        $path = (string) parse_url((string) $request->post('service'), PHP_URL_PATH);
 
-            $payload = [
-                $field => $value,
-                'id' => $id
-            ];
-
-            $client = new Client([
-                'transport' => CurlTransport::class,
-            ]);
-
-            $request = $client->createRequest()
-                ->setMethod('PUT')
-                ->setUrl($endpoint)
-                ->addHeaders(['Content-Type' => 'application/json'])
-                ->setFormat(Client::FORMAT_JSON)  // Ensures JSON encoding for request
-                ->setData($payload)
-                ->setOptions([
-                    CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST => false
-                ]);
-
-            $response = $request->send();
-            Yii::info('Raw response content: ' . $response->content, 'api_debug');
-            if ($response->isOk) { // Check if the response status is 200-299
-                return $response->data; // Return the relevant response data
-            } else {
-                // Log error details if needed and return a clear message
-                return [
-                    'status' => $response->statusCode,
-                    'error' => $response->data ?? 'Unexpected error occurred'
-                ];
-            }
-        } catch (\Exception $e) {
-            return "HTTP request failed with error: " . $e->getMessage();
+        if (!preg_match('#/apiv1/([a-z-]+)/(\d+)/?$#', $path, $matches) || !isset(self::INLINE_EDITABLE[$matches[1]])) {
+            throw new BadRequestHttpException('Unknown resource.');
         }
 
+        [$modelClass, $entity, $editableFields] = self::INLINE_EDITABLE[$matches[1]];
+        $field = $request->post('name');
+
+        if (!in_array($field, $editableFields, true)) {
+            throw new BadRequestHttpException('This field cannot be edited.');
+        }
+        if (!Yii::$app->user->can('update-' . $entity)) {
+            throw new ForbiddenHttpException('You are not allowed to update this ' . $entity . '.');
+        }
+        if (($model = $modelClass::findOne((int) $matches[2])) === null) {
+            throw new NotFoundHttpException('The record does not exist.');
+        }
+
+        $model->$field = $request->post('value');
+
+        if (!$model->validate([$field]) || !$model->save(false)) {
+            return implode(' ', $model->getErrorSummary(true)) ?: 'The change could not be saved.';
+        }
+
+        return $model->toArray();
     }
 
     /* Make a Get request for assignes
@@ -259,21 +310,12 @@ class StandardsController extends Controller
     }
 
     // Status Drop Down Source
-    /*
-     *   ◦ Not Implemented (0): No evidence of implementation
-     *   ◦ Partially Implemented (1): Some evidence, but significant gaps exist
-     *   ◦ Mostly Implemented (2): Substantial evidence, minor gaps exist
-     *   ◦ Fully Implemented (3): Complete implementation with evidence
-     */
-
     public function actionStatus()
     {
-        $list = [
-            (object) ['code' => 0, 'name' => 'Active', 'description' => 'No evidence of implementation'],
-            (object) ['code' => 1, 'name' => 'Partial', 'description' => 'Some evidence, but significant gaps exist'],
-            (object) ['code' => 2, 'name' => 'Mostly Implemented', 'description' => 'Substantial evidence, minor gaps exist'],
-            (object) ['code' => 3, 'name' => 'Complete', 'description' => 'Complete implementation with evidence'],
-        ];
+        $list = [];
+        foreach (Requirements::STATUS_LABELS as $code => $name) {
+            $list[] = (object) ['code' => $code, 'name' => $name, 'description' => Requirements::STATUS_DESCRIPTIONS[$code]];
+        }
 
         return Yii::$app->utility->dropDown($list, 'name', 'code', ['description']);
     }

@@ -4,6 +4,7 @@ namespace app\models;
 
 use common\events\RequirementsStatusEvent;
 use Yii;
+use yii\helpers\HtmlPurifier;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -30,6 +31,20 @@ class Requirements extends \yii\db\ActiveRecord
 {
     const EVENT_EVAL_STATUS = 'eval_status';
     const EVENT_ASSIGNMENT = 'assignment';
+
+    const STATUS_LABELS = [
+        0 => 'Not Implemented',
+        1 => 'Partially Implemented',
+        2 => 'Mostly Implemented',
+        3 => 'Fully Implemented',
+    ];
+
+    const STATUS_DESCRIPTIONS = [
+        0 => 'No evidence of implementation',
+        1 => 'Some evidence, but significant gaps exist',
+        2 => 'Substantial evidence, minor gaps exist',
+        3 => 'Complete implementation with evidence',
+    ];
 
     /**
      * {@inheritdoc}
@@ -59,7 +74,10 @@ class Requirements extends \yii\db\ActiveRecord
         return [
             [['description', 'status', 'evidence_path', 'gaps', 'actions_required', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
             [['description', 'gaps', 'actions_required', 'evidence_path', 'assignee'], 'string'],
+            [['description', 'gaps', 'actions_required', 'evidence_path'], 'filter', 'filter' => [HtmlPurifier::class, 'process'], 'skipOnEmpty' => true],
+            [['assignee'], 'filter', 'filter' => 'strip_tags', 'skipOnEmpty' => true],
             [['status', 'sub_clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            ['status', 'in', 'range' => array_keys(self::STATUS_LABELS)],
             [['sub_clause_id'], 'exist', 'skipOnError' => true, 'targetClass' => SubClause::class, 'targetAttribute' => ['sub_clause_id' => 'id']],
             ['timeline', 'date', 'format' => 'php:Y-m-d'],
         ];
@@ -102,6 +120,11 @@ class Requirements extends \yii\db\ActiveRecord
     public static function find()
     {
         return new RequirementsQuery(get_called_class());
+    }
+
+    public function getStatusLabel()
+    {
+        return self::STATUS_LABELS[$this->status] ?? 'Not Set';
     }
 
     public function afterSave($insert, $changedAttributes)

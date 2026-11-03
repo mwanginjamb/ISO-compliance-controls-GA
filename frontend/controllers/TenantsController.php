@@ -4,6 +4,8 @@ namespace frontend\controllers;
 
 use app\models\Tenants;
 use app\models\TenantsSearch;
+use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,8 +23,33 @@ class TenantsController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'actions' => ['index', 'view'],
+                            'allow' => true,
+                            'permissions' => ['view-tenants'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'permissions' => ['manage-tenants'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'permissions' => ['manage-tenants'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'permissions' => ['manage-tenants'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],

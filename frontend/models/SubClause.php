@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\HtmlPurifier;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
@@ -53,6 +54,8 @@ class SubClause extends \yii\db\ActiveRecord
         return [
             [['clause_id', 'sub_clause'], 'required'],
             [['number', 'sub_clause', 'clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['sub_clause'], 'filter', 'filter' => [HtmlPurifier::class, 'process'], 'skipOnEmpty' => true],
+            [['number'], 'filter', 'filter' => 'strip_tags', 'skipOnEmpty' => true],
             [['sub_clause'], 'string'],
             [['clause_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['number'], 'string', 'max' => 250],

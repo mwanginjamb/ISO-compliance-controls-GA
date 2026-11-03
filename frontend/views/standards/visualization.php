@@ -66,7 +66,7 @@ $averageCompliance = Yii::$app->dashboard->getAverageCompliance($model->id)
 
                 <div class="col-md-3 mb-3">
                     <h6 class="text-<?= Yii::$app->utility->getPseudoClassFromConfig($c->getSubClausesAverageStatus()) ?>">
-                        <?= $c->title ?> <span
+                        <?= Html::encode($c->title) ?> <span
                             class="badge badge-secondary right"><?= $c->getSubClausesAverageStatus() ?></span>
                     </h6>
                     <p class="text-muted"> <?= $c->getSubClauses()->count() ?> requirements</small></p>
