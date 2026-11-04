@@ -20,6 +20,8 @@ class SignupForm extends Model
 
     public $confirm_password;
 
+    public $verifyCode;
+
 
     /**
      * {@inheritdoc}
@@ -30,18 +32,34 @@ class SignupForm extends Model
             ['username', 'trim'],
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['username', 'string', 'min' => 2, 'max' => 64],
+            // Allowlist: letters, digits, dot, underscore, hyphen and single inner spaces.
+            // Must start and end with a letter or digit. Rejects quotes, '=', ';', '--', etc.
+            [
+                'username', 'match',
+                'pattern' => '/^[\p{L}\p{N}](?:[\p{L}\p{N}._-]| (?! ))*(?<=[\p{L}\p{N}])$/u',
+                'message' => 'Username may only contain letters, numbers, spaces, dots, underscores and hyphens.',
+            ],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
+            // Local part: alphanumeric segments separated by a single '.', '_' or '-'.
+            [
+                'email', 'match',
+                'pattern' => '/^[a-z0-9]+(?:[._-][a-z0-9]+)*@kemri\.go\.ke$/i',
+                'message' => 'Please use a valid kemri.go.ke email address.',
+            ],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
-            ['email', 'match', 'pattern' => '/^[^@]+@kemri\.go\.ke$/i', 'message' => 'Only kemri.go.ke email addresses are allowed.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+            ['confirm_password', 'required'],
             ['confirm_password', 'compare', 'compareAttribute' => 'password'],
+
+            ['verifyCode', 'required'],
+            ['verifyCode', 'captcha'],
 
 
             ['tenant_id', 'required', 'message' => 'Please select a tenant.'],
@@ -57,6 +75,7 @@ class SignupForm extends Model
             //'password' => 'Password',
             //'confirm_password' => 'Confirm Password',
             'tenant_id' => 'Business Unit',
+            'verifyCode' => 'Verification Code',
         ];
     }
 
