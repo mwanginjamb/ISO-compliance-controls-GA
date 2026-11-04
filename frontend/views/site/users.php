@@ -5,6 +5,7 @@ use yii\bootstrap5\Html;
 /** @var yii\web\View $this */
 
 $this->title = 'App Users';
+$canManageUsers = Yii::$app->user->can('manage-users');
 ?>
 <div class="site-index">
 
@@ -46,6 +47,9 @@ $this->title = 'App Users';
                                 <td class="fw-bold">Staff Number</td>
                                 <td class="fw-bold">API Token</td>
                                 <td class="fw-bold">Status</td>
+                                <?php if ($canManageUsers): ?>
+                                    <td class="fw-bold">Actions</td>
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,6 +79,20 @@ $this->title = 'App Users';
                                             <?php endif; ?>
                                         </td>
                                         <td><?= $status ?></td>
+                                        <?php if ($canManageUsers): ?>
+                                            <td>
+                                                <?php if ($c->status != 0 && $c->id != Yii::$app->user->id): ?>
+                                                    <?= Html::a('<i class="fas fa-trash"></i>', ['delete-user', 'id' => $c->id], [
+                                                        'class' => 'btn btn-sm btn-outline-danger',
+                                                        'title' => 'Delete user',
+                                                        'data' => [
+                                                            'confirm' => 'Delete user "' . $c->username . '"? They will no longer be able to log in or use the API.',
+                                                            'method' => 'post',
+                                                        ],
+                                                    ]) ?>
+                                                <?php endif; ?>
+                                            </td>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

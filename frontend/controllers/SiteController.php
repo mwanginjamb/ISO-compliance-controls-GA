@@ -15,6 +15,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\VerifyEmailForm;
 use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 use frontend\models\ResetPasswordForm;
 use yii\base\InvalidArgumentException;
 use frontend\models\PasswordResetRequestForm;
@@ -60,7 +61,7 @@ class SiteController extends Controller
                         'roles' => ['@'], // Authenticated
                     ],
                     [
-                        'actions' => ['users'],
+                        'actions' => ['users', 'delete-user'],
                         'allow' => true,
                         'permissions' => ['manage-users'],
                     ],
@@ -71,6 +72,7 @@ class SiteController extends Controller
                 'actions' => [
                     'logout' => ['post'],
                     'generate-token' => ['post'],
+                    'delete-user' => ['post'],
                 ],
             ],
         ];
@@ -312,5 +314,34 @@ class SiteController extends Controller
             'Your new API token (copy it now, it will not be shown again): ' . $token
         );
         return $this->redirect(Yii::$app->user->can('manage-users') ? ['users'] : ['index']);
+    }
+
+    /**
+     * Soft-deletes a user: marks them as deleted and revokes their API token,
+     * which blocks both web login and API access while keeping related records intact.
+     */
+    public function actionDeleteUser($id)
+    {
+        $user = IdentityUser::findOne((int) $id);
+        if ($user === null) {
+            throw new NotFoundHttpException('The requested user does not exist.');
+        }
+
+        if ((int) $user->id === (int) Yii::$app->user->id) {
+            Yii::$app->session->setFlash('error', 'You cannot delete your own account.');
+            return $this->redirect(['users']);
+        }
+
+        $user->status = IdentityUser::STATUS_DELETED;
+        $user->access_token = null;
+        $user->access_token_expires_at = null;
+
+        if ($user->save(false, ['status', 'access_token', 'access_token_expires_at'])) {
+            Yii::$app->session->setFlash('success', 'User "' . $user->username . '" has been deleted.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Unable to delete the user.');
+        }
+
+        return $this->redirect(['users']);
     }
 }
